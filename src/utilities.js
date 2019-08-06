@@ -1,0 +1,50 @@
+function arraySum(array1, array2, array_size = 2) {
+    var array_result = Array()
+    for (i = 0; i < array_size; i++) {
+        array_result.push(array1[i] + array2[i])
+    }
+    return array_result
+}
+
+function generateRandomNotInRange(min, max, avoidMin, avoidMax) {
+    return [Math.floor(Math.random() * (avoidMin - min + 1)) + min, Math.floor(Math.random() * (avoidMax - max + 1)) + max][Math.random() < 0.5 ? 0 : 1]
+}
+
+function generateRandomInt(max) {
+    return Math.floor(Math.random() * (max + 1))
+}
+
+function generatePositionInGrid(grid_max, not_over, not_below) {
+    return [
+        generateRandomNotInRange(0, grid_max, not_over, not_below),
+        generateRandomNotInRange(0, grid_max, not_over, not_below)
+    ]
+}
+
+function compareNDArrays(arr1, arr2) {
+    let result;
+
+    arr1.forEach((e1, _) => arr2.forEach(e2 => {
+        if (e1 !== e2) {
+            result = false
+        } else {
+            result = true
+        }
+    }))
+
+    return result
+}
+
+function generatePseudoRandomName() {
+    names = ['Edward', 'Craig', 'Brian', 'Logan', 'Mable', 'Santos', 'Willard', 'Copeland', 'Marcus', 'Alvarado', 'Clara', 'Moreno', 'Ronald', 'Gonzales', 'Veronica', 'Richards', 'Hattie', 'Glover', 'Roxanne', 'Henry']
+    return names[generateRandomInt(names.length - 1)]
+}
+
+module.exports = {
+    generateRandomInt,
+    generatePositionInGrid,
+    generateRandomNotInRange,
+    generatePseudoRandomName,
+    arraySum,
+    compareNDArrays
+}
