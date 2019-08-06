@@ -3,21 +3,49 @@ const blessed = require('blessed');
 class UserInterface {
     constructor() {
         this.screen = blessed.screen({ smartCSR: true });
+        this.screen.title = 'Mars Rover Kata'
         this.gameBox = this.createGameBox()
+        this.messageBox = this.createMessageBox()
+
+        this.messageContainer = blessed.log(this.messageBox)
+        this.gameContainer = blessed.box(this.gameBox)
+
         this.bindGameBoxKeys()
         this.bindScreenKeys()
-        this.gameBox.focus();
+        this.gameContainer.focus();
         this.render()
     }
 
-    createGameBox() {
-        return blessed.box({
+    createMessageBox() {
+        return {
             parent: this.screen,
-            top: 'center',
+            top: 0,
             left: 'center',
             width: '100%',
-            height: '100%',
-            content: '{center}Press Enter to play...{/center}',
+            height: '30%',
+            tags: true,
+            border: {
+                type: 'line'
+            },
+            style: {
+                fg: 'white',
+                bg: 'grey',
+                border: {
+                    fg: '#f0f0f0'
+                },
+                scrollbar: true
+            }
+        }
+    }
+    createGameBox() {
+        return {
+            parent: this.screen,
+            bottom: 0,
+            left: 'center',
+            valign: 'middle',
+            width: '100%',
+            height: '50%',
+            content: '{center}Starting simulation...{/center}',
             tags: true,
             border: {
                 type: 'line'
@@ -27,17 +55,23 @@ class UserInterface {
                 bg: 'darkGrey',
                 border: {
                     fg: '#f0f0f0'
-                },
-                hover: {
-                    bg: 'green'
                 }
             }
-        })
+        }
     }
 
-    renderGrid(grid) {
+    notice(message) {
+        this.messageContainer.pushLine(message);
+    }
+
+    clearScreen() {
+        this.gameContainer.detach()
+        this.gameContainer = blessed.box(this.gameBox)
+    }
+
+    drawGrid(grid) {
         for (let i = 0; i < grid.length; i++) {
-            this.gameBox.setLine(i, grid[i].join(' '))
+            this.gameContainer.setLine(i, `{center} ${grid[i].join(' ')} {/center}`)
         }
     }
 
@@ -49,10 +83,10 @@ class UserInterface {
     }
 
     bindGameBoxKeys() {
-        this.gameBox.key('enter', function (ch, key) {
-            // this.gameBox.setContent('{right}Even different {black-fg}content{/black-fg}.{/right}\n');
-            // this.gameBox.setLine(1, 'bar');
-            // this.gameBox.insertLine(1, 'foo');
+        this.gameContainer.key('enter', function (ch, key) {
+            this.gameContainer.setContent('{right}Even different {black-fg}content{/black-fg}.{/right}\n');
+            this.gameContainer.setLine(1, 'bar');
+            this.gameContainer.insertLine(1, 'foo');
         });
     }
 

@@ -1,12 +1,11 @@
 const { Rover } = require('./rover')
-const { ViewableBoard } = require('./view')
 const { commandsLUT } = require('./config')
 const { compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('./utilities')
 
-class Board extends ViewableBoard {
+class Board {
     constructor(tiles = 10) {
-        super()
         this.width = tiles
+        this.gameOver = false
         this.turn = 0
         this.player = undefined
         this.rovers = []
@@ -15,6 +14,22 @@ class Board extends ViewableBoard {
         this.obstacles = []
         this.initialize()
         this.silenceRovers = false
+        this.messageHistory = []
+        this.messageObservers = []
+    }
+
+    addObserver(observer) {
+        this.messageObservers.push(observer)
+    }
+
+    pushMessage(message) {
+        this.messageObservers.forEach(observer => observer.notify(message))
+        this.messageHistory.push(message)
+    }
+
+    initializeCommands(playerCommands) {
+        this.playerCommands = this._parseCommands(playerCommands)
+        this.roverCommands = Array.from({ length: this.rovers.length }, () => this._randomCommandsList())
     }
 
     occupiedPositions() {
@@ -48,28 +63,17 @@ class Board extends ViewableBoard {
         }
     }
 
-    play(playerCommands) {
-        this.playerCommands = this._parseCommands(playerCommands)
-        this.roverCommands = Array.from({ length: this.rovers.length }, () => this._randomCommandsList())
-        this.timer = setInterval(this.update.bind(this), 5000)
+    takeTurn() {
+        if (this.turn >= this.playerCommands.length) {
+            this.gameOver = true
+        } else {
+            this.player[this.playerCommands[this.turn]]()
 
-        for (let i = 0; i < this.playerCommands.length; i++) {
-            this.update()
+            for (let i = 0; i < this.rovers.length; i++) {
+                this.rovers[i][this.roverCommands[i][this.turn]]()
+            }
+            this.turn++;
         }
-    }
-
-    update() {
-        this.displayTurnStart()
-        this.display()
-        this.player[this.playerCommands[this.turn]]()
-
-        for (let i = 0; i < this.rovers.length; i++) {
-            this.rovers[i][this.roverCommands[i][this.turn]]()
-        }
-
-        this.display()
-        this.displayTurnEnd()
-        this.turn++;
     }
 
     validMove(pos) {

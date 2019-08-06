@@ -18,7 +18,7 @@ class Rover {
     }
 
     report(message) {
-        if (!this.board.silenceRovers) this.board.printToScreen(`${this.name}: ${message}`)
+        this.board.pushMessage(`${this.name}: ${message}`)
     }
 
     makeTurn(direction) {
