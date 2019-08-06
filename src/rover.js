@@ -73,13 +73,12 @@ const rover = {
         console.log(`Moving in direction ${directionLUT[direction]} while facing ${this.direction}`)
         try {
             let array = arraySum(this.position, directionLUT[direction])
-            this.position = this._inBounds(array)
+            this.position = board.inBounds(array)
         } catch (error) {
             console.log('Illegal move attempted, staying put.')
         } finally {
             console.log(`Final position is ${this.position}`)
             this.travel_log.push(this.position)
-            printBoard()
         }
     },
 
@@ -93,14 +92,6 @@ const rover = {
         return directionIndex + modifier
     },
 
-    _inBounds(pos) {
-        pos.forEach((coordinate) => {
-            if (board_width / 2 > coordinate && coordinate < 0) {
-                throw new Error('Out of bounds move.')
-            }
-        })
-        return pos
-    }
 }
 
 function arraySum(array1, array2, array_size = 2) {
@@ -118,6 +109,22 @@ const board = {
         'S': 'v',
         'W': '<',
     },
+    turn: 0,
+    rovers: [],
+
+    inBounds(pos) {
+        pos.forEach((coordinate) => {
+            if (board_width / 2 > coordinate && coordinate < 0) {
+                throw new Error('Out of bounds move.')
+            }
+        })
+        return pos
+    },
+
+    printRoverTravelLog(rover_index) {
+        this.printBoard(this.rovers[rover_index])
+    },
+
     printBoard(roverLogs = []) {
         if (roverLogs.length) console.log('\n\nPrinting travel log:\n')
 
@@ -137,6 +144,10 @@ const board = {
             }
             console.log(row.join(' '))
         }
+    },
+
+    sendCommands(commands, roverIndex) {
+        this.rovers[roverIndex].runCommands(commands)
     }
 }
 
