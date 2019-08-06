@@ -44,7 +44,7 @@ class UserInterface {
             left: 'center',
             valign: 'middle',
             width: '100%',
-            height: '50%',
+            height: '70%',
             content: '{center}Starting simulation...{/center}',
             tags: true,
             border: {
