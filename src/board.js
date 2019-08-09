@@ -29,23 +29,23 @@ class Board {
 
     initializeCommands(playerCommands) {
         this.playerCommands = this._parseCommands(playerCommands)
-        this.roverCommands = Array.from({ length: this.rovers.length }, () => this._randomCommandsList())
+        this.roverCommands = Array.from({ length: this.rovers.length }, () => this._generateRandomCommandList())
     }
 
     occupiedPositions() {
         return this.obstacles.concat(this.rovers.map(rover => rover.position)).concat([this.player.position])
     }
 
-    _randomValidSpawnPoint() {
-        let position = generatePositionInGrid(this.width, 5, 5)
+    _generateRandomValidSpawnPoint() {
+        let position = generatePositionInGrid(this.width, this.player.position[0], this.player.position[1])
         let occupiedPositions = this.occupiedPositions()
         while (occupiedPositions.some(occupied => compareNDArrays(occupied, position))) {
-            return this._randomValidSpawnPoint()
+            return this._generateRandomValidSpawnPoint()
         }
         return position
     }
 
-    _randomCommandsList() {
+    _generateRandomCommandList() {
         return Array.from({ length: this.playerCommands.length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
     }
 
@@ -55,11 +55,11 @@ class Board {
         this.obstacles = []
 
         for (let i = 0; i < roverCount; i++) {
-            this.rovers.push(new Rover(generatePseudoRandomName(), this._randomValidSpawnPoint(), generateRandomInt(3), this))
+            this.rovers.push(new Rover(generatePseudoRandomName(), this._generateRandomValidSpawnPoint(), generateRandomInt(3), this))
         }
 
         for (let i = 0; i < obstacleCount; i++) {
-            this.obstacles.push(this._randomValidSpawnPoint())
+            this.obstacles.push(this._generateRandomValidSpawnPoint())
         }
     }
 
