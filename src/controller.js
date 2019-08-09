@@ -1,7 +1,7 @@
+var fs = require("fs")
 const { gridSpriteRenderer } = require('./config')
 const { UserInterface } = require('./ui')
 const { Board } = require('./board')
-
 
 
 class GameController {
@@ -40,21 +40,26 @@ class GameController {
 
     update() {
         if (!this.paused) {
-            if (this.board.gameOver) {
-                clearInterval(this.timer)
-                this.timer = null
-                this.notify('GAME OVER')
-                return
-            }
+            this.checkGameOver()
             this.ui.clearScreen()
             this.renderTurnStart()
             this.board.tick()
+            this.checkGameOver()
             this.ui.drawGrid(this.renderGrid())
             this.renderTurnEnd()
             this.ui.render()
         }
     }
 
+    checkGameOver() {
+        if (this.board.gameOver) {
+            clearInterval(this.timer)
+            this.timer = null
+            this.writeLogFile()
+            this.ui.gameOver()
+            return
+        }
+    }
     renderGrid() {
         return this.board.grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
     }
@@ -69,6 +74,14 @@ class GameController {
 
     renderTurnEnd() {
         this.notify('----------------------------\n')
+    }
+
+    writeLogFile() {
+        var data = JSON.stringify()
+        fs.writeFile("~/roverlog.txt", data, (err) => {
+            if (err) console.log(err);
+            this.notify(`Successfully wrote history to file: ${file}`);
+        });
     }
 }
 

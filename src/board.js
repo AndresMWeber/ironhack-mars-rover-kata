@@ -49,7 +49,7 @@ class Board {
     }
 
     tick() {
-        if (this.turn >= this.playerCommands.length) {
+        if (this.turn >= this.playerCommands.length - 1) {
             this.gameOver = true
         } else {
             this.takeRoverTurn(this.player, this.playerCommands)

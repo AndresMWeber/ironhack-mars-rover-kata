@@ -9,24 +9,24 @@ const colors = {
     ENEMY: '#5f5f00',
 }
 
-SPRITE = 'sprite'
-GRID_SPRITE_TEMPLATE = `[ ${SPRITE} ]`
-SPRITE_OBSTACLE = '@'
-SPRITE_EMPTY = ' '
-SPRITE_ROVER_UP = '^'
-SPRITE_ROVER_RIGHT = '>'
-SPRITE_ROVER_DOWN = 'v'
-SPRITE_ROVER_LEFT = '<'
+const SPRITE = 'sprite'
+const GRID_SPRITE_TEMPLATE = `[ ${SPRITE} ]`
+const SPRITE_OBSTACLE = '@'
+const SPRITE_EMPTY = ' '
+const SPRITE_ROVER_UP = '^'
+const SPRITE_ROVER_RIGHT = '>'
+const SPRITE_ROVER_DOWN = 'v'
+const SPRITE_ROVER_LEFT = '<'
 
-SPRITE_PLAYER_UP = `{${colors.PLAYER}-fg}${SPRITE_ROVER_UP}{/}`
-SPRITE_PLAYER_RIGHT = `{${colors.PLAYER}-fg}${SPRITE_ROVER_RIGHT}{/}`
-SPRITE_PLAYER_DOWN = `{${colors.PLAYER}-fg}${SPRITE_ROVER_DOWN}{/}`
-SPRITE_PLAYER_LEFT = `{${colors.PLAYER}-fg}${SPRITE_ROVER_LEFT}{/}`
+const SPRITE_PLAYER_UP = `{${colors.PLAYER}-fg}${SPRITE_ROVER_UP}{/}`
+const SPRITE_PLAYER_RIGHT = `{${colors.PLAYER}-fg}${SPRITE_ROVER_RIGHT}{/}`
+const SPRITE_PLAYER_DOWN = `{${colors.PLAYER}-fg}${SPRITE_ROVER_DOWN}{/}`
+const SPRITE_PLAYER_LEFT = `{${colors.PLAYER}-fg}${SPRITE_ROVER_LEFT}{/}`
 
-SPRITE_ENEMY_UP = `{${colors.ENEMY}-fg}${SPRITE_ROVER_UP}{/}`
-SPRITE_ENEMY_RIGHT = `{${colors.ENEMY}-fg}${SPRITE_ROVER_RIGHT}{/}`
-SPRITE_ENEMY_DOWN = `{${colors.ENEMY}-fg}${SPRITE_ROVER_DOWN}{/}`
-SPRITE_ENEMY_LEFT = `{${colors.ENEMY}-fg}${SPRITE_ROVER_LEFT}{/}`
+const SPRITE_ENEMY_UP = `{${colors.ENEMY}-fg}${SPRITE_ROVER_UP}{/}`
+const SPRITE_ENEMY_RIGHT = `{${colors.ENEMY}-fg}${SPRITE_ROVER_RIGHT}{/}`
+const SPRITE_ENEMY_DOWN = `{${colors.ENEMY}-fg}${SPRITE_ROVER_DOWN}{/}`
+const SPRITE_ENEMY_LEFT = `{${colors.ENEMY}-fg}${SPRITE_ROVER_LEFT}{/}`
 
 const roverSpriteRenderer = {
     0: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ROVER_UP),

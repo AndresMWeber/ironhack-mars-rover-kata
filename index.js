@@ -11,8 +11,8 @@ var commandsList = undefined
 
 const question1 = () => {
     return new Promise((resolve, reject) => {
-        rl.question('Please enter your rover commands:\n\tMust be\n\t\t"r"-Right "f"-Forward "l"-Left "b"-Backward)\n', (answer) => {
-            commandsList = answer
+        rl.question('Please enter your rover commands (default: flrblff):\n  Must be\n    r    Right\n    f    Forward\n    l    Left\n    b    Backward\n', (answer) => {
+            commandsList = answer || 'flrblff'
             resolve()
         })
     })
@@ -20,8 +20,8 @@ const question1 = () => {
 
 const question2 = () => {
     return new Promise((resolve, reject) => {
-        rl.question('Now enter the board size:\n', (answer) => {
-            boardSize = answer
+        rl.question('Now enter the board size between 8-20 (default: 10): ', (answer) => {
+            boardSize = (answer > 8 && answer < 20) ? answer : 10
             resolve()
         })
     })

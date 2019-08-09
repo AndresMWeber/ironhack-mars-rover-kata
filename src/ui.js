@@ -17,6 +17,27 @@ class UserInterface {
         this.render()
     }
 
+    createInputBox() {
+        return {
+            parent: this.screen,
+            top: 'center',
+            left: 'center',
+            width: '50%',
+            height: '30%',
+            tags: true,
+            border: {
+                type: 'line'
+            },
+            style: {
+                fg: COLORS.HIGHLIGHT,
+                bg: COLORS.FG_WIN,
+                border: {
+                    fg: COLORS.BORDER_WIN
+                }
+            }
+        }
+    }
+
     createMessageBox() {
         return {
             parent: this.screen,
@@ -38,6 +59,7 @@ class UserInterface {
             }
         }
     }
+
     createGameBox() {
         return {
             parent: this.screen,
@@ -76,6 +98,13 @@ class UserInterface {
         for (let i = 0; i < grid.length; i++) {
             this.gameContainer.setLine(i, `{center} ${grid[i].join(' ')} {/center}`)
         }
+    }
+
+    gameOver() {
+        this.inputBox = this.createInputBox()
+        this.inputContainer = blessed.input(this.inputBox)
+        this.inputContainer.focus()
+        this.inputContainer.setContent('{center}Game Over.  Input a rover index to check its travel log.{/}')
     }
 
     bindScreenKeys() {
