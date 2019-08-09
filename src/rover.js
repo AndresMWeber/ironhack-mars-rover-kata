@@ -1,6 +1,6 @@
 const { directionLUT, compass } = require('./config')
 const { arraySum } = require('./utilities')
-
+const { playerSpriteRenderer, roverSpriteRenderer } = require('./config')
 
 // Rover Object Goes Here
 // ======================
@@ -11,6 +11,10 @@ class Rover {
         this.travel_log = [start_pos]
         this._direction = direction
         this.board = board
+    }
+
+    get ascii_sprite() {
+        return (this.name === 'Starlord') ? playerSpriteRenderer[this._direction] : roverSpriteRenderer[this._direction]
     }
 
     get direction() {

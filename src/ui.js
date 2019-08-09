@@ -1,18 +1,19 @@
 const blessed = require('blessed');
+const { COLORS } = require('./config')
+
 
 class UserInterface {
-    constructor() {
+    constructor(gameController) {
         this.screen = blessed.screen({ smartCSR: true });
         this.screen.title = 'Mars Rover Kata'
+        this.screen.gameController = gameController
         this.gameBox = this.createGameBox()
         this.messageBox = this.createMessageBox()
 
         this.messageContainer = blessed.log(this.messageBox)
         this.gameContainer = blessed.box(this.gameBox)
 
-        this.bindGameBoxKeys()
         this.bindScreenKeys()
-        this.gameContainer.focus();
         this.render()
     }
 
@@ -28,10 +29,10 @@ class UserInterface {
                 type: 'line'
             },
             style: {
-                fg: 'white',
-                bg: 'grey',
+                fg: COLORS.FG_WIN,
+                bg: COLORS.BG_WIN,
                 border: {
-                    fg: '#f0f0f0'
+                    fg: COLORS.BORDER_WIN
                 },
                 scrollbar: true
             }
@@ -51,10 +52,10 @@ class UserInterface {
                 type: 'line'
             },
             style: {
-                fg: 'white',
-                bg: 'darkGrey',
+                fg: COLORS.HIGHLIGHT,
+                bg: COLORS.DARK_WIN,
                 border: {
-                    fg: '#f0f0f0'
+                    fg: COLORS.BORDER_WIN
                 }
             }
         }
@@ -66,7 +67,9 @@ class UserInterface {
 
     clearScreen() {
         this.gameContainer.detach()
+        this.messageContainer.detach()
         this.gameContainer = blessed.box(this.gameBox)
+        this.messageContainer = blessed.log(this.messageBox)
     }
 
     drawGrid(grid) {
@@ -76,17 +79,15 @@ class UserInterface {
     }
 
     bindScreenKeys() {
-        // Quit on Escape, q, or Control-C.
         this.screen.key(['escape', 'q', 'C-c'], function (ch, key) {
             return process.exit(0);
-        });
-    }
+        })
 
-    bindGameBoxKeys() {
-        this.gameContainer.key('enter', function (ch, key) {
-            this.gameContainer.setContent('{right}Even different {black-fg}content{/black-fg}.{/right}\n');
-            this.gameContainer.setLine(1, 'bar');
-            this.gameContainer.insertLine(1, 'foo');
+        this.screen.on('keypress', function (key, ch) {
+            if (key === ' ') {
+                this.screen.gameController.pause()
+            }
+            console.log(key)
         });
     }
 
