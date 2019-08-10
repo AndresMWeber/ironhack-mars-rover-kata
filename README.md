@@ -30,6 +30,7 @@ or
 ```bash
 npm run-script play
 ```
+Feel free to just hit `Enter` twice and run the game in default mode (you can read the defaults on the prompts).
 
 ## Log Files
 
