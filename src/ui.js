@@ -23,7 +23,8 @@ class UserInterface {
             top: 'center',
             left: 'center',
             width: '50%',
-            height: '30%',
+            height: '10%',
+            valign: 'middle',
             tags: true,
             border: {
                 type: 'line'
@@ -50,7 +51,7 @@ class UserInterface {
                 type: 'line'
             },
             style: {
-                fg: COLORS.FG_WIN,
+                fg: COLORS.HIGHLIGHT,
                 bg: COLORS.BG_WIN,
                 border: {
                     fg: COLORS.BORDER_WIN
@@ -104,7 +105,7 @@ class UserInterface {
         this.inputBox = this.createInputBox()
         this.inputContainer = blessed.input(this.inputBox)
         this.inputContainer.focus()
-        this.inputContainer.setContent('{center}Game Over.  Input a rover index to check its travel log.{/}')
+        this.inputContainer.setContent('{center}Simulation Ended.{/}')
     }
 
     bindScreenKeys() {

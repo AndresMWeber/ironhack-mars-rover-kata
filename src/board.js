@@ -14,10 +14,7 @@ class Board {
         this.rovers = []
         this.roverCommands = []
         this.obstacles = []
-
-        this.messageHistory = []
         this.messageObservers = []
-
         this.initialize()
     }
 
@@ -33,6 +30,7 @@ class Board {
     initializeCommands(playerCommands) {
         this.playerCommands = this._parseCommands(playerCommands)
         this.roverCommands = Array.from({ length: this.rovers.length }, () => this._generateRandomCommandList())
+        this.pushMessage(`Player Commands list: ${this.playerCommands}`)
     }
 
     occupiedPositions() {
@@ -49,13 +47,10 @@ class Board {
     }
 
     tick() {
-        if (this.turn >= this.playerCommands.length - 1) {
-            this.gameOver = true
-        } else {
-            this.takeRoverTurn(this.player, this.playerCommands)
-            this.rovers.map((rover, index) => this.takeRoverTurn(rover, this.roverCommands[index]))
-            this.turn++;
-        }
+        this.takeRoverTurn(this.player, this.playerCommands)
+        this.rovers.map((rover, index) => this.takeRoverTurn(rover, this.roverCommands[index]))
+        this.turn++;
+        this.gameOver = (this.turn >= this.playerCommands.length)
     }
 
     takeRoverTurn(rover, commandsList) {
@@ -90,7 +85,6 @@ class Board {
 
     pushMessage(message) {
         this.messageObservers.map(observer => observer.notify(message))
-        this.messageHistory.push(message)
     }
 
     _parseCommands(commands) {

@@ -14,6 +14,12 @@ function generateRandomInt(max) {
     return Math.floor(Math.random() * (max + 1))
 }
 
+function getFileTimestamp() {
+    var d = new Date
+    return [d.getMonth() + 1, d.getDate(), d.getFullYear()].join('-') + '_' +
+        [d.getHours(), d.getMinutes(), d.getSeconds()].join('-')
+}
+
 function generatePositionInGrid(grid_max, not_over, not_below) {
     return [
         generateRandomNotInRange(0, grid_max, not_over, not_below),
@@ -46,5 +52,6 @@ module.exports = {
     generateRandomNotInRange,
     generatePseudoRandomName,
     arraySum,
-    compareNDArrays
+    compareNDArrays,
+    getFileTimestamp
 }

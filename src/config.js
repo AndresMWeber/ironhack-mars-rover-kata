@@ -4,14 +4,14 @@ const colors = {
     HIGHLIGHT: '#D2E190',
     BORDER_WIN: '#B5CF49',
     INACTIVE: '#74923A',
-    DARK_WIN: '#22402A',
+    DARK_WIN: '#00af5f',
     PLAYER: '#98e85a',
     ENEMY: '#5f5f00',
 }
 
 const SPRITE = 'sprite'
 const GRID_SPRITE_TEMPLATE = `[ ${SPRITE} ]`
-const SPRITE_OBSTACLE = '@'
+const SPRITE_OBSTACLE = '#'
 const SPRITE_EMPTY = ' '
 const SPRITE_ROVER_UP = '^'
 const SPRITE_ROVER_RIGHT = '>'
@@ -29,10 +29,10 @@ const SPRITE_ENEMY_DOWN = `{${colors.ENEMY}-fg}${SPRITE_ROVER_DOWN}{/}`
 const SPRITE_ENEMY_LEFT = `{${colors.ENEMY}-fg}${SPRITE_ROVER_LEFT}{/}`
 
 const roverSpriteRenderer = {
-    0: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ROVER_UP),
-    1: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ROVER_RIGHT),
-    2: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ROVER_DOWN),
-    3: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ROVER_LEFT),
+    0: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ENEMY_UP),
+    1: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ENEMY_RIGHT),
+    2: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ENEMY_DOWN),
+    3: GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_ENEMY_LEFT),
 }
 
 const playerSpriteRenderer = {

@@ -1,4 +1,5 @@
 var fs = require("fs")
+const { getFileTimestamp } = require('./utilities')
 const { gridSpriteRenderer } = require('./config')
 const { UserInterface } = require('./ui')
 const { Board } = require('./board')
@@ -9,12 +10,14 @@ class GameController {
         this.timer = null
         this.paused = false
         this.pause_delta = new Date()
+        this.messageHistory = []
         this.board = new Board(boardSize)
         this.board.addObserver(this)
         this.ui = new UserInterface(this)
     }
 
     notify(message) {
+        this.messageHistory.push(message)
         this.ui.notice(message)
     }
 
@@ -29,7 +32,7 @@ class GameController {
     pause() {
         if (new Date() - this.pause_delta > 1000) {
             this.paused = !this.paused
-            this.notify((this.paused) ? 'GAME PAUSED' : 'GAME UNPAUSED')
+            this.notify((this.paused) ? 'GAME PAUSED' : 'GAME UN-PAUSED')
             this.pause_delta = new Date()
         }
     }
@@ -40,14 +43,13 @@ class GameController {
 
     update() {
         if (!this.paused) {
-            this.checkGameOver()
             this.ui.clearScreen()
             this.renderTurnStart()
             this.board.tick()
-            this.checkGameOver()
             this.ui.drawGrid(this.renderGrid())
             this.renderTurnEnd()
             this.ui.render()
+            this.checkGameOver()
         }
     }
 
@@ -61,7 +63,14 @@ class GameController {
         }
     }
     renderGrid() {
-        return this.board.grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
+        let renderedGrid = this.board.grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
+        this.messageHistory.push(renderedGrid.map((row) => this.sanitizeLine(row.join(' '), ['{/}', '{#5f5f00-fg}', '{#98e85a-fg}'])))
+        return renderedGrid
+    }
+
+    sanitizeLine(line, deleteList) {
+        deleteList.map((deletion) => line = line.split(deletion).join(''))
+        return line
     }
 
     renderGridSpace(entry) {
@@ -77,11 +86,18 @@ class GameController {
     }
 
     writeLogFile() {
-        var data = JSON.stringify()
-        fs.writeFile("~/roverlog.txt", data, (err) => {
-            if (err) console.log(err);
-            this.notify(`Successfully wrote history to file: ${file}`);
-        });
+        var filePath = `roverLog_${getFileTimestamp()}.log`
+        var logger = fs.createWriteStream(filePath, { flags: 'a' })
+
+        this.messageHistory.map((message) => {
+            if (!Array.isArray(message)) {
+                message = [message]
+            }
+            message.map((line) => logger.write(JSON.stringify(line) + '\r\n'))
+        })
+
+        logger.end()
+        this.notify(`Successfully wrote history to file: ${filePath}`);
     }
 }
 
