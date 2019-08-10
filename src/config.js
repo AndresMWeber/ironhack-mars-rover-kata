@@ -75,5 +75,7 @@ module.exports = {
     compass,
     gridSpriteRenderer,
     roverSpriteRenderer,
-    playerSpriteRenderer
+    playerSpriteRenderer,
+    GRID_SPRITE_TEMPLATE,
+    SPRITE
 }

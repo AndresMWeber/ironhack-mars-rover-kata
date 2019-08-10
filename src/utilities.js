@@ -42,7 +42,7 @@ function compareNDArrays(arr1, arr2) {
 }
 
 function generatePseudoRandomName() {
-    names = ['Edward', 'Craig', 'Brian', 'Logan', 'Mable', 'Santos', 'Willard', 'Copeland', 'Marcus', 'Alvarado', 'Clara', 'Moreno', 'Ronald', 'Gonzales', 'Veronica', 'Richards', 'Hattie', 'Glover', 'Roxanne', 'Henry']
+    names = ['Edward', 'Craig', 'Brian', 'Logan', 'Mable', 'Willard', 'Copeland', 'Marcus', 'Alvarado', 'Clara', 'Moreno', 'Ronald', 'Gonzales', 'Veronica', 'Richards', 'Hattie', 'Glover', 'Roxanne', 'Henry']
     return names[generateRandomInt(names.length - 1)]
 }
 

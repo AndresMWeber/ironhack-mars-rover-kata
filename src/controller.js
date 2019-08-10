@@ -27,6 +27,9 @@ class GameController {
             this.timer = setInterval(this.update.bind(this), 2000)
         }
         this.board.initializeCommands(playerCommands)
+        this.notify('Player Commands list:')
+        this.board.playerCommands.map((command) => this.notify('    ' + command))
+        this.renderTurnEnd
     }
 
     pause() {
@@ -46,7 +49,7 @@ class GameController {
             this.ui.clearScreen()
             this.renderTurnStart()
             this.board.tick()
-            this.ui.drawGrid(this.renderGrid())
+            this.ui.drawGrid(this.renderGrid(this.board.grid))
             this.renderTurnEnd()
             this.ui.render()
             this.checkGameOver()
@@ -57,13 +60,16 @@ class GameController {
         if (this.board.gameOver) {
             clearInterval(this.timer)
             this.timer = null
-            this.writeLogFile()
             this.ui.gameOver()
+            this.messageHistory.push('TRAVEL MAP FOR ALL ROVERS:')
+            this.renderGrid(this.board.generateTravelLogBoard())
+            this.writeLogFile()
             return
         }
     }
-    renderGrid() {
-        let renderedGrid = this.board.grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
+
+    renderGrid(grid) {
+        let renderedGrid = grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
         this.messageHistory.push(renderedGrid.map((row) => this.sanitizeLine(row.join(' '), ['{/}', '{#5f5f00-fg}', '{#98e85a-fg}'])))
         return renderedGrid
     }
@@ -74,15 +80,15 @@ class GameController {
     }
 
     renderGridSpace(entry) {
-        return gridSpriteRenderer[typeof (entry)] || entry.ascii_sprite
+        return gridSpriteRenderer[typeof (entry)] || entry.ascii_override || entry.ascii_sprite
     }
 
     renderTurnStart() {
-        this.notify(`TURN ${this.board.turn + 1}    -    NUM ENEMIES: ${this.board.rovers.length + 1}`)
+        this.notify(`TURN ${this.board.turn + 1}    -    NUM CHARACTERS: ${this.board.rovers.length + 1}`)
     }
 
     renderTurnEnd() {
-        this.notify('----------------------------\n')
+        this.notify(`${'-'.repeat(this.board.width * 6)}`)
     }
 
     writeLogFile() {

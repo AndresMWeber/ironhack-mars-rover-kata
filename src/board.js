@@ -1,5 +1,5 @@
 const { Rover } = require('./rover')
-const { commandsLUT } = require('./config')
+const { commandsLUT, GRID_SPRITE_TEMPLATE, SPRITE } = require('./config')
 const { compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('./utilities')
 
 class Board {
@@ -22,15 +22,19 @@ class Board {
         return Array.from({ length: this.width }, () => Array.from({ length: this.width }, () => undefined))
     }
 
-    generateTravelLogBoard(rover) {
+    generateTravelLogBoard() {
         let board = this.generateEmptyGrid()
-        return rover.travelLog.map((position) => board[position[0]][position[1]] = rover)
+        let rovers = this.rovers.concat([this.player])
+        rovers.map((rover) => {
+            rover.ascii_override = GRID_SPRITE_TEMPLATE.replace(SPRITE, rover.name[0])
+            rover.travel_log.map((position) => board[position[0]][position[1]] = rover)
+        })
+        return board
     }
 
     initializeCommands(playerCommands) {
         this.playerCommands = this._parseCommands(playerCommands)
         this.roverCommands = Array.from({ length: this.rovers.length }, () => this._generateRandomCommandList())
-        this.pushMessage(`Player Commands list: ${this.playerCommands}`)
     }
 
     occupiedPositions() {
