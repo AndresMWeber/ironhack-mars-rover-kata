@@ -29,16 +29,32 @@ class UserInterface {
         this.paused = !this.paused
     }
 
-    drawMessage(message) {
-        throw new Error('You have to implement the method notify!')
+    onGameOver() {
+        throw new Error('You have to implement the method gameOver!')
     }
 
     isGameOver() {
-        throw new Error('You have to implement the method isGameOver!')
+        if (this.gameController.gameOver) {
+            clearInterval(this.timer)
+            this.timer = null
+            this.onGameOver()
+            this.gameController.addLogLine('TRAVEL MAP FOR ALL ROVERS:')
+            this.renderGrid(this.gameController.board.generateTravelLogBoard())
+            this.gameController.onGameOver()
+            return
+        }
     }
 
-    gameOver() {
-        throw new Error('You have to implement the method gameOver!')
+    render() {
+        this.ui.drawGrid()
+    }
+    
+    drawGrid(grid) {
+        throw new Error('You have to implement the method drawGrid!')
+    }
+
+    drawMessage(message) {
+        throw new Error('You have to implement the method notify!')
     }
 
     preDraw() {
@@ -49,16 +65,8 @@ class UserInterface {
         this.gameController.notifyTurnEnd()
     }
 
-    render() {
-        this.ui.drawGrid()
-    }
-
     clearScreen() {
         return null
-    }
-
-    drawGrid(grid) {
-        throw new Error('You have to implement the method drawGrid!')
     }
 
     bindScreenKeys() {

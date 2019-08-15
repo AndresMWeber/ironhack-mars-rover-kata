@@ -30,27 +30,7 @@ class TerminalUI extends UserInterface {
         }
     }
 
-    message(message) {
-        this.gameController.emit(message)
-    }
-
-    drawMessage(message) {
-        this.messageContainer.pushLine(message)
-    }
-
-    isGameOver() {
-        if (this.gameController.gameOver) {
-            clearInterval(this.timer)
-            this.timer = null
-            this.gameOver()
-            this.message('TRAVEL MAP FOR ALL ROVERS:')
-            this.renderGrid(this.gameController.board.generateTravelLogBoard())
-            this.gameController.onGameOver()
-            return
-        }
-    }
-
-    gameOver() {
+    onGameOver() {
         this.inputBox = this.createInputBox()
         this.inputContainer = blessed.input(this.inputBox)
         this.inputContainer.focus()
@@ -71,11 +51,8 @@ class TerminalUI extends UserInterface {
         return gridSpriteRenderer[typeof (entry)] || entry.ascii_override || entry.ascii_sprite
     }
 
-    clearScreen() {
-        this.gameContainer.detach()
-        this.messageContainer.detach()
-        this.gameContainer = blessed.box(this.gameBox)
-        this.messageContainer = blessed.log(this.messageBox)
+    drawMessage(message) {
+        this.messageContainer.pushLine(message)
     }
 
     drawGrid() {
@@ -83,6 +60,25 @@ class TerminalUI extends UserInterface {
         for (let i = 0; i < grid.length; i++) {
             this.gameContainer.setLine(i, `{center} ${grid[i].join(' ')} {/center}`)
         }
+    }
+
+    clearScreen() {
+        this.gameContainer.detach()
+        this.messageContainer.detach()
+        this.gameContainer = blessed.box(this.gameBox)
+        this.messageContainer = blessed.log(this.messageBox)
+    }
+
+    bindScreenKeys(ui) {
+        this.screen.key(['escape', 'q', 'C-c'], function () {
+            return process.exit(0)
+        })
+
+        this.screen.on('keypress', function (key) {
+            if (key === ' ') {
+                ui.pause()
+            }
+        })
     }
 
     createInputBox() {
@@ -151,19 +147,6 @@ class TerminalUI extends UserInterface {
             }
         }
     }
-
-    bindScreenKeys(ui) {
-        this.screen.key(['escape', 'q', 'C-c'], function () {
-            return process.exit(0)
-        })
-
-        this.screen.on('keypress', function (key) {
-            if (key === ' ') {
-                ui.pause()
-            }
-        })
-    }
-
 }
 
 module.exports = { TerminalUI }
