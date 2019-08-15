@@ -1,21 +1,18 @@
 const { Rover } = require('./rover')
-const { commandsLUT } = require('./config')
-const { Observable, compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('./utilities')
-const { GRID_SPRITE_TEMPLATE, SPRITE } = require('./ascii-render')
+const { Observable, compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('../utilities')
+const { GRID_SPRITE_TEMPLATE, SPRITE } = require('../ascii-config')
 
-class Board {
-    constructor(tiles = 10) {
-        this.width = tiles + (tiles % 2)
+class Board extends Observable {
+    constructor(tiles = 10, roverCount = 3, obstacleCount = 5) {
+        super()
+        this.width = (tiles >= 8 && tiles <= 20) ? tiles + (tiles % 2) : 10
         this.grid = this.generateEmptyGrid()
-        this.gameOver = false
-        this.turn = 0
 
         this.player = undefined
-        this.playerCommands = undefined
         this.rovers = []
-        this.roverCommands = []
         this.obstacles = []
-        this.initialize()
+
+        this.initialize(roverCount, obstacleCount)
     }
 
     generateEmptyGrid() {
@@ -32,16 +29,11 @@ class Board {
         return board
     }
 
-    initializeCommands(playerCommands) {
-        this.playerCommands = this._parseCommands(playerCommands)
-        this.roverCommands = Array.from({ length: this.rovers.length }, () => this._generateRandomCommandList())
-    }
-
     occupiedPositions() {
         return this.obstacles.concat(this.rovers.map(rover => rover.position)).concat([this.player.position])
     }
 
-    initialize(roverCount = 3, obstacleCount = 5) {
+    initialize(roverCount, obstacleCount) {
         this.player = new Rover('Starlord', [this.width / 2, this.width / 2], 0, this)
         this.rovers = Array.from({ length: roverCount }, () => new Rover(generatePseudoRandomName(), this._generateRandomValidSpawnPoint(), generateRandomInt(3), this))
         this.obstacles = Array.from({ length: obstacleCount }, () => this._generateRandomValidSpawnPoint())
@@ -50,16 +42,14 @@ class Board {
         this.rovers.map(rover => this.updateGridPosition(rover.position, rover))
     }
 
-    tick() {
-        this.takeRoverTurn(this.player, this.playerCommands)
-        this.rovers.map((rover, index) => this.takeRoverTurn(rover, this.roverCommands[index]))
-        this.turn++;
-        this.gameOver = (this.turn >= this.playerCommands.length)
+    tick(playerCommand, enemyRoverCommands) {
+        this.takeRoverTurn(this.player, playerCommand)
+        this.rovers.map((rover, i) => this.takeRoverTurn(rover, enemyRoverCommands[i]))
     }
 
-    takeRoverTurn(rover, commandsList) {
+    takeRoverTurn(rover, command) {
         this.clearGridPosition(rover.position)
-        rover[commandsList[this.turn]]()
+        rover[command]()
         this.updateGridPosition(rover.position, rover)
     }
 
@@ -83,11 +73,8 @@ class Board {
         return pos
     }
 
-    _parseCommands(commands) {
-        return commands.trim().split('').map((command) => commandsLUT[command]).filter(element => element !== undefined)
-    }
-
     _generateRandomValidSpawnPoint() {
+        //TODO: This is super badly implemented.
         let position = generatePositionInGrid(this.width, this.player.position[0], this.player.position[1])
         let occupiedPositions = this.occupiedPositions()
         while (occupiedPositions.some(occupied => compareNDArrays(occupied, position))) {
@@ -95,11 +82,6 @@ class Board {
         }
         return position
     }
-
-    _generateRandomCommandList() {
-        return Array.from({ length: this.playerCommands.length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
-    }
-
 }
 
 module.exports = { Board }

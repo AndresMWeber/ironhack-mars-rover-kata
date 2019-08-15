@@ -5,11 +5,11 @@ class UserInterface {
         this.paused = false
         this.timer = null
         this.updateInterval = 2000
+        this.gameController.addObserver(this.drawMessage.bind(this))
     }
 
     start() {
         if (!this.timer) {
-            this.reset()
             this.timer = setInterval(this.update.bind(this), 2000)
         }
     }
@@ -29,8 +29,8 @@ class UserInterface {
         this.paused = !this.paused
     }
 
-    notice(message) {
-        throw new Error('You have to implement the method notice!')
+    drawMessage(message) {
+        throw new Error('You have to implement the method notify!')
     }
 
     isGameOver() {

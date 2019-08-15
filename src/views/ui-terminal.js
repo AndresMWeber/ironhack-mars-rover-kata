@@ -1,13 +1,12 @@
 const blessed = require('blessed')
 const { UserInterface } = require('./ui')
-const { COLORS, gridSpriteRenderer } = require('./config')
-const { removeFromString } = require('./utilities')
+const { colors, gridSpriteRenderer } = require('../ascii-config')
+const { removeFromString } = require('../utilities')
 
 
 class TerminalUI extends UserInterface {
     constructor(gameController) {
         super(gameController)
-        this.gameController.addObserver(this.notice)
         this.pause_delta = new Date()
 
         this.screen = blessed.screen({ smartCSR: true })
@@ -20,7 +19,7 @@ class TerminalUI extends UserInterface {
         this.messageContainer = blessed.log(this.messageBox)
         this.gameContainer = blessed.box(this.gameBox)
 
-        this.bindScreenKeys()
+        this.bindScreenKeys(this)
         this.render()
     }
 
@@ -32,21 +31,21 @@ class TerminalUI extends UserInterface {
     }
 
     message(message) {
-        this.gameController.notify(message)
+        this.gameController.emit(message)
     }
 
-    notice(message) {
+    drawMessage(message) {
         this.messageContainer.pushLine(message)
     }
 
     isGameOver() {
-        if (this.board.gameOver) {
+        if (this.gameController.gameOver) {
             clearInterval(this.timer)
             this.timer = null
             this.gameOver()
             this.message('TRAVEL MAP FOR ALL ROVERS:')
-            this.renderGrid(this.board.generateTravelLogBoard())
-            this.writeLogFile()
+            this.renderGrid(this.gameController.board.generateTravelLogBoard())
+            this.gameController.onGameOver()
             return
         }
     }
@@ -64,7 +63,7 @@ class TerminalUI extends UserInterface {
 
     renderGrid(grid) {
         let renderedGrid = grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
-        this.message(renderedGrid.map((row) => removeFromString(row.join(' '), ['{/}', '{#5f5f00-fg}', '{#98e85a-fg}'])))
+        this.gameController.addLogLine(renderedGrid.map((row) => removeFromString(row.join(' '), ['{/}', '{#5f5f00-fg}', '{#98e85a-fg}'])))
         return renderedGrid
     }
 
@@ -99,10 +98,10 @@ class TerminalUI extends UserInterface {
                 type: 'line'
             },
             style: {
-                fg: COLORS.HIGHLIGHT,
-                bg: COLORS.FG_WIN,
+                fg: colors.HIGHLIGHT,
+                bg: colors.BG_WIN,
                 border: {
-                    fg: COLORS.BORDER_WIN
+                    fg: colors.BORDER_WIN
                 }
             }
         }
@@ -120,10 +119,10 @@ class TerminalUI extends UserInterface {
                 type: 'line'
             },
             style: {
-                fg: COLORS.HIGHLIGHT,
-                bg: COLORS.BG_WIN,
+                fg: colors.HIGHLIGHT,
+                bg: colors.BG_WIN,
                 border: {
-                    fg: COLORS.BORDER_WIN
+                    fg: colors.BORDER_WIN
                 },
                 scrollbar: true
             }
@@ -144,23 +143,23 @@ class TerminalUI extends UserInterface {
                 type: 'line'
             },
             style: {
-                fg: COLORS.HIGHLIGHT,
-                bg: COLORS.DARK_WIN,
+                fg: colors.HIGHLIGHT,
+                bg: colors.BG_WIN,
                 border: {
-                    fg: COLORS.BORDER_WIN
+                    fg: colors.BORDER_WIN
                 }
             }
         }
     }
 
-    bindScreenKeys() {
+    bindScreenKeys(ui) {
         this.screen.key(['escape', 'q', 'C-c'], function () {
             return process.exit(0)
         })
 
         this.screen.on('keypress', function (key) {
             if (key === ' ') {
-                this.pause()
+                ui.pause()
             }
         })
     }

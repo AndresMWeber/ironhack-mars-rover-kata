@@ -1,6 +1,6 @@
-const { directionLUT, compass } = require('./config')
-const { arraySum } = require('./utilities')
-const { playerSpriteRenderer, roverSpriteRenderer } = require('./ascii-render')
+const { directionLUT, compass } = require('../config')
+const { playerSpriteRenderer, roverSpriteRenderer } = require('../ascii-config')
+const { arraySum } = require('../utilities')
 
 // Rover Object Goes Here
 // ======================
@@ -22,7 +22,7 @@ class Rover {
     }
 
     report(message) {
-        this.board.pushMessage(`${this.name}: ${message}`)
+        this.board.emit(`${this.name}: ${message}`)
     }
 
     makeTurn(direction) {

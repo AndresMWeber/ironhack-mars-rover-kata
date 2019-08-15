@@ -82,7 +82,7 @@ class HtmlUI extends UserInterface {
         }
     }
 
-    notice(message) {
+    drawMessage(message) {
         this.messageContainer.pushLine(message);
     }
 

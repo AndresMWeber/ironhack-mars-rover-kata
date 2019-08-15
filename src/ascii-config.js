@@ -46,3 +46,12 @@ const gridSpriteRenderer = {
     'string': GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_OBSTACLE),
     'undefined': GRID_SPRITE_TEMPLATE.replace(SPRITE, SPRITE_EMPTY)
 }
+
+module.exports = {
+    colors,
+    gridSpriteRenderer,
+    roverSpriteRenderer,
+    playerSpriteRenderer,
+    GRID_SPRITE_TEMPLATE,
+    SPRITE
+}

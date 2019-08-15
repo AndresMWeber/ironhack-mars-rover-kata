@@ -1,4 +1,5 @@
-const { GameController } = require('./src/controller')
+const { GameController } = require('./src/controllers/controller')
+const { runtimes } = require('./src/config')
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -21,7 +22,7 @@ const question1 = () => {
 const question2 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Now enter the board size between 8-20 (default: 10): ', (answer) => {
-            boardSize = (answer >= 8 && answer <= 20) ? answer : 10
+            boardSize = answer || 10
             resolve()
         })
     })
@@ -31,7 +32,7 @@ const main = async () => {
     await question1()
     await question2()
     rl.close()
-    new GameController(parseInt(boardSize)).play(commandsList)
+    new GameController(parseInt(boardSize), runtimes[0]).start(commandsList)
 }
 
 main()

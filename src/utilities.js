@@ -8,7 +8,7 @@ class Observable {
         this.observers.push(observer)
     }
 
-    notifyObservers(message) {
+    emit(message) {
         this.messageHistory.push(message)
         this.observers.map(observer => observer(message))
     }

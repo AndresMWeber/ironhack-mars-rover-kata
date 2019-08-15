@@ -1,3 +1,7 @@
+const runtimes = {
+    0: 'terminal',
+    1: 'html'
+}
 
 const directionLUT = {
     'N': [-1, 0],
@@ -21,13 +25,8 @@ const commandsLUT = {
 }
 
 module.exports = {
-    COLORS: colors,
     commandsLUT,
     directionLUT,
     compass,
-    gridSpriteRenderer,
-    roverSpriteRenderer,
-    playerSpriteRenderer,
-    GRID_SPRITE_TEMPLATE,
-    SPRITE
+    runtimes
 }
