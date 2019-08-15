@@ -1,6 +1,6 @@
 const { directionLUT, compass } = require('./config')
 const { arraySum } = require('./utilities')
-const { playerSpriteRenderer, roverSpriteRenderer } = require('./config')
+const { playerSpriteRenderer, roverSpriteRenderer } = require('./ascii-render')
 
 // Rover Object Goes Here
 // ======================

@@ -1,3 +1,19 @@
+class Observable {
+    constructor() {
+        this.observers = []
+        this.messageHistory = []
+    }
+
+    addObserver(observer) {
+        this.observers.push(observer)
+    }
+
+    notifyObservers(message) {
+        this.messageHistory.push(message)
+        this.observers.map(observer => observer(message))
+    }
+}
+
 function arraySum(array1, array2, array_size = 2) {
     var array_result = Array()
     for (i = 0; i < array_size; i++) {
@@ -12,6 +28,11 @@ function generateRandomNotInRange(min, max, avoidMin, avoidMax) {
 
 function generateRandomInt(max) {
     return Math.floor(Math.random() * (max + 1))
+}
+
+function removeFromString(line, deleteList) {
+    deleteList.map((deletion) => line = line.split(deletion).join(''))
+    return line
 }
 
 function getFileTimestamp() {
@@ -53,5 +74,7 @@ module.exports = {
     generatePseudoRandomName,
     arraySum,
     compareNDArrays,
-    getFileTimestamp
+    getFileTimestamp,
+    removeFromString,
+    Observable
 }

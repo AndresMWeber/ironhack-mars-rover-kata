@@ -1,128 +1,68 @@
-const blessed = require('blessed');
-const { COLORS } = require('./config')
-
 
 class UserInterface {
     constructor(gameController) {
-        this.screen = blessed.screen({ smartCSR: true });
-        this.screen.title = 'Mars Rover Kata'
-        this.screen.gameController = gameController
-        this.gameBox = this.createGameBox()
-        this.messageBox = this.createMessageBox()
-
-        this.messageContainer = blessed.log(this.messageBox)
-        this.gameContainer = blessed.box(this.gameBox)
-
-        this.bindScreenKeys()
-        this.render()
+        this.gameController = gameController
+        this.paused = false
+        this.timer = null
+        this.updateInterval = 2000
     }
 
-    createInputBox() {
-        return {
-            parent: this.screen,
-            top: 'center',
-            left: 'center',
-            width: '50%',
-            height: '10%',
-            valign: 'middle',
-            tags: true,
-            border: {
-                type: 'line'
-            },
-            style: {
-                fg: COLORS.HIGHLIGHT,
-                bg: COLORS.FG_WIN,
-                border: {
-                    fg: COLORS.BORDER_WIN
-                }
-            }
+    start() {
+        if (!this.timer) {
+            this.reset()
+            this.timer = setInterval(this.update.bind(this), 2000)
         }
     }
 
-    createMessageBox() {
-        return {
-            parent: this.screen,
-            top: 0,
-            left: 'center',
-            width: '100%',
-            height: '30%',
-            tags: true,
-            border: {
-                type: 'line'
-            },
-            style: {
-                fg: COLORS.HIGHLIGHT,
-                bg: COLORS.BG_WIN,
-                border: {
-                    fg: COLORS.BORDER_WIN
-                },
-                scrollbar: true
-            }
+    update() {
+        if (!this.paused) {
+            this.clearScreen()
+            this.preDraw()
+            this.drawGrid()
+            this.postDraw()
+            this.render()
+            this.isGameOver()
         }
     }
 
-    createGameBox() {
-        return {
-            parent: this.screen,
-            bottom: 0,
-            left: 'center',
-            valign: 'middle',
-            width: '100%',
-            height: '70%',
-            content: '{center}Starting simulation...{/center}',
-            tags: true,
-            border: {
-                type: 'line'
-            },
-            style: {
-                fg: COLORS.HIGHLIGHT,
-                bg: COLORS.DARK_WIN,
-                border: {
-                    fg: COLORS.BORDER_WIN
-                }
-            }
-        }
+    pause() {
+        this.paused = !this.paused
     }
 
     notice(message) {
-        this.messageContainer.pushLine(message);
+        throw new Error('You have to implement the method notice!')
     }
 
-    clearScreen() {
-        this.gameContainer.detach()
-        this.messageContainer.detach()
-        this.gameContainer = blessed.box(this.gameBox)
-        this.messageContainer = blessed.log(this.messageBox)
-    }
-
-    drawGrid(grid) {
-        for (let i = 0; i < grid.length; i++) {
-            this.gameContainer.setLine(i, `{center} ${grid[i].join(' ')} {/center}`)
-        }
+    isGameOver() {
+        throw new Error('You have to implement the method isGameOver!')
     }
 
     gameOver() {
-        this.inputBox = this.createInputBox()
-        this.inputContainer = blessed.input(this.inputBox)
-        this.inputContainer.focus()
-        this.inputContainer.setContent('{center}Simulation Ended.{/}')
+        throw new Error('You have to implement the method gameOver!')
     }
 
-    bindScreenKeys() {
-        this.screen.key(['escape', 'q', 'C-c'], function (ch, key) {
-            return process.exit(0);
-        })
+    preDraw() {
+        this.gameController.update()
+    }
 
-        this.screen.on('keypress', function (key, ch) {
-            if (key === ' ') {
-                this.screen.gameController.pause()
-            }
-            console.log(key)
-        });
+    postDraw() {
+        this.gameController.notifyTurnEnd()
     }
 
     render() {
-        this.screen.render()
+        this.ui.drawGrid()
+    }
+
+    clearScreen() {
+        return null
+    }
+
+    drawGrid(grid) {
+        throw new Error('You have to implement the method drawGrid!')
+    }
+
+    bindScreenKeys() {
+        throw new Error('You have to implement the method bindScreenKeys!')
     }
 }
 

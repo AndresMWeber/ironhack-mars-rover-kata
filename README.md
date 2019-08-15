@@ -249,13 +249,13 @@ Here is an example log file generated from the gif above:
 Notice the travel map at the end which shows you the path they've taken.  Note that it will not show you if the rover has been over a spot multiple times, just shows the path with overlaps.
 
 ## Acknowledgements
-
 - [Tania Rascia](https://github.com/taniarascia) I used her [Snek.js](https://github.com/taniarascia/snek/) game as a template for the ui/terminal based blessed rendering.
 
 ## Author
-
 - [Andres Weber](https://www.github.com/andresmweber)
 
+## Sprites
+- [Andres Weber](https://www.piskelapp.com/user/5716277421670400/public)
+  
 ## License
-
 This project is open source and available under the [MIT License](LICENSE).

@@ -1,6 +1,7 @@
 const { Rover } = require('./rover')
-const { commandsLUT, GRID_SPRITE_TEMPLATE, SPRITE } = require('./config')
-const { compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('./utilities')
+const { commandsLUT } = require('./config')
+const { Observable, compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('./utilities')
+const { GRID_SPRITE_TEMPLATE, SPRITE } = require('./ascii-render')
 
 class Board {
     constructor(tiles = 10) {
@@ -14,7 +15,6 @@ class Board {
         this.rovers = []
         this.roverCommands = []
         this.obstacles = []
-        this.messageObservers = []
         this.initialize()
     }
 
@@ -81,14 +81,6 @@ class Board {
         if (this.grid[pos[0]][pos[1]] !== undefined) throw new Error('Space is occupied.')
 
         return pos
-    }
-
-    addObserver(observer) {
-        this.messageObservers.push(observer)
-    }
-
-    pushMessage(message) {
-        this.messageObservers.map(observer => observer.notify(message))
     }
 
     _parseCommands(commands) {
