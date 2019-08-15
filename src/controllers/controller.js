@@ -1,7 +1,5 @@
-var fs = require("fs")
 const { Board } = require('../models/board')
 const { HtmlUI } = require('../views/ui-html')
-const { TerminalUI } = require('../views/ui-terminal')
 const { runtimes, commandsLUT } = require('../config')
 const { getFileTimestamp, Observable, generateRandomInt } = require('../utilities')
 
@@ -10,7 +8,7 @@ class GameController extends Observable {
     constructor(boardSize, runtime) {
         super()
         this.runtime = runtime
-        this.ui = (this.runtime == runtimes[0]) ? new TerminalUI(this) : new HtmlUI(this)
+        this.ui = new HtmlUI(this)
         this.simulation = this.runtime === runtimes[0]
 
         this.gameOver = false
@@ -37,9 +35,13 @@ class GameController extends Observable {
 
     update(playerCommand = undefined) {
         this.notifyTurnStart()
-        this.board.tick(this.simulation && this.playerCommands[this.turn] || playerCommand, this._generateRandomCommandList(this.board.rovers.length))
-        this.turn++
-        this.gameOver = (this.turn >= this.playerCommands.length && this.simulation)
+        try {
+            this.board.tick(this.simulation && this.playerCommands[this.turn] || playerCommand, this._generateRandomCommandList(this.board.rovers.length))
+            this.turn++;
+            this.gameOver = (this.turn >= this.playerCommands.length && this.simulation)
+        } catch (error) {
+            this.emit(error.message)
+        }
     }
 
     notifyTurnStart() {
@@ -60,16 +62,13 @@ class GameController extends Observable {
 
     writeLogFile() {
         var filePath = `roverLog_${getFileTimestamp()}.log`
-        var logger = fs.createWriteStream(filePath, { flags: 'a' })
 
         this.messageHistory.map((message) => {
             if (!Array.isArray(message)) {
                 message = [message]
             }
-            message.map((line) => logger.write(JSON.stringify(line) + '\r\n'))
         })
 
-        logger.end()
         this.emit(`Successfully wrote history to file: ${filePath}`);
     }
 

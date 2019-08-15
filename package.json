@@ -2,15 +2,15 @@
   "name": "ironhack-mars-rover-kata",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "play": "node command-line.js"
+    "play": "node src/command-line.js",
+    "build": "webpack --mode development",
+    "play-web": "http-server -c-1",
+    "rebuild-web": "rm -R dist; webpack --mode development; http-server -c-1"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
-    "blessed": "^0.1.81"
-  }
+  "dependencies": {}
 }

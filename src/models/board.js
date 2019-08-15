@@ -1,6 +1,8 @@
 const { Rover } = require('./rover')
 const { Observable, compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('../utilities')
 const { GRID_SPRITE_TEMPLATE, SPRITE } = require('../ascii-config')
+const { commandsLUT } = require('../config')
+
 
 class Board extends Observable {
     constructor(tiles = 10, roverCount = 3, obstacleCount = 5) {
@@ -48,9 +50,13 @@ class Board extends Observable {
     }
 
     takeRoverTurn(rover, command) {
-        this.clearGridPosition(rover.position)
-        rover[command]()
-        this.updateGridPosition(rover.position, rover)
+        if (commandsLUT[command]) {
+            this.clearGridPosition(rover.position)
+            rover[command]()
+            this.updateGridPosition(rover.position, rover)
+        } else {
+            throw new Error(`Invalid rover command specified ${command}`)
+        }
     }
 
     updateGridPosition(position, object = 'obstacle') {

@@ -1,5 +1,5 @@
-const { GameController } = require('./src/controllers/controller')
-const { runtimes } = require('./src/config')
+const { GameController } = require('./controllers/controller')
+const { runtimes } = require('./config')
 const readline = require('readline');
 
 const rl = readline.createInterface({

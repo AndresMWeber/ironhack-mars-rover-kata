@@ -4,13 +4,18 @@ class UserInterface {
         this.gameController = gameController
         this.paused = false
         this.timer = null
-        this.updateInterval = 2000
+        this.fps = 30
+        this.updateInterval = 1000
         this.gameController.addObserver(this.drawMessage.bind(this))
     }
 
     start() {
+        this.setTimer()
+    }
+
+    setTimer() {
         if (!this.timer) {
-            this.timer = setInterval(this.update.bind(this), 2000)
+            this.timer = setInterval(this.update.bind(this), this.updateInterval / this.fps)
         }
     }
 
@@ -48,7 +53,7 @@ class UserInterface {
     render() {
         this.ui.drawGrid()
     }
-    
+
     drawGrid(grid) {
         throw new Error('You have to implement the method drawGrid!')
     }
