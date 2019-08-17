@@ -38,6 +38,7 @@ class GameController extends Observable {
                 this.board.tick(this.simulation && this.playerCommands[this.turn] || command, this._generateRandomCommandList(this.board.rovers.length))
                 this.turn++;
                 this.gameOver = (this.simulation && this.turn >= this.playerCommands.length)
+                this.notifyTurnEnd()
             } catch (error) {
                 this.emit(error.message)
             }

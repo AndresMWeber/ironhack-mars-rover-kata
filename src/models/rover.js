@@ -49,7 +49,7 @@ class Rover {
     }
 
     move(direction) {
-        this.report(`Moving in direction ${directionLUT[direction]} while facing ${this.direction} = require(${this.position}`)
+        this.report(`Moving in direction ${directionLUT[direction]} while facing ${this.direction} = ${this.position}`)
         try {
             let future_position = arraySum(this.position, directionLUT[direction])
             this.position = this.board.validMove(future_position)

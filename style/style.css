@@ -3,14 +3,14 @@ h1 {
     font-family: 'Press Start 2P', cursive;
     text-transform: uppercase;
     font-weight: 400;
-    font-size: 70px;
+    font-size: 2rem;
     text-shadow: 4px 5px #e6e6d8, 6px 7px #c6a39a;
     text-align: center;
     word-spacing: 9999999px;
 }
 
 canvas {
-    margin: 25px 10px 25px 10px;
+    margin: 10px 20px 10px 20px;
     border: 1px solid black;
 }
 
@@ -26,13 +26,16 @@ body {
 }
 
 #messageLog {
-    margin: 25px 10px 25px 10px;
+    margin: 10px 20px 10px 20px;
     overflow-y: auto;
     max-height: 320px;
     font-family: 'Press Start 2P', cursive;
     color: beige;
     background: rgb(39, 36, 34);
-    min-width: 60vw;
+    width: 60vw;
+    min-height: 40vw;
+    max-height: 40vw;
+    max-width: 60vw;
     flex-direction: column;
     display: inline-block;
 }
@@ -50,6 +53,10 @@ p {
 
 .float-right {
     float: right;
+}
+
+.flex-col {
+    flex-direction: column
 }
 
 .flex {

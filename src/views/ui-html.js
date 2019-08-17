@@ -95,7 +95,7 @@ class HtmlUI extends UserInterface {
         let t = document.createTextNode(message)
         p.appendChild(t)
         this.messageLog.appendChild(p)
-        this.messageLog.scrollBy({ y: 12 })
+        this.messageLog.scrollTop = p.offsetTop
     }
 
     drawGrid() {
