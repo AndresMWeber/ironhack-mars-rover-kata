@@ -1,9 +1,7 @@
-const { directionLUT, compass } = require('./config')
-const { arraySum } = require('./utilities')
-const { playerSpriteRenderer, roverSpriteRenderer } = require('./config')
+const { directionLUT, compass } = require('../config')
+const { playerSpriteRenderer, roverSpriteRenderer } = require('../ascii-config')
+const { arraySum } = require('../utilities')
 
-// Rover Object Goes Here
-// ======================
 class Rover {
     constructor(name, start_pos, direction, board) {
         this.name = name
@@ -22,7 +20,7 @@ class Rover {
     }
 
     report(message) {
-        this.board.pushMessage(`${this.name}: ${message}`)
+        this.board.emit(`${this.name}: ${message}`)
     }
 
     makeTurn(direction) {
@@ -51,7 +49,7 @@ class Rover {
     }
 
     move(direction) {
-        this.report(`Moving in direction ${directionLUT[direction]} while facing ${this.direction} from ${this.position}`)
+        this.report(`Moving in direction ${directionLUT[direction]} while facing ${this.direction} = require(${this.position}`)
         try {
             let future_position = arraySum(this.position, directionLUT[direction])
             this.position = this.board.validMove(future_position)
@@ -73,7 +71,6 @@ class Rover {
         return directionIndex + modifier
     }
 }
-
 
 module.exports = {
     Rover
