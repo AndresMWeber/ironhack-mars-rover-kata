@@ -72,6 +72,7 @@ module.exports = {
     generateRandomNotInRange,
     generateRandomInt,
     removeFromString,
+    generatePositionInGrid,
     getFileTimestamp,
     compareNDArrays,
     generatePseudoRandomName,
