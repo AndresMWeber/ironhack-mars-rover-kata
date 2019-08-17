@@ -4,14 +4,25 @@ h1 {
     text-transform: uppercase;
     font-weight: 400;
     font-size: 2rem;
-    text-shadow: 4px 5px #e6e6d8, 6px 7px #c6a39a;
+    text-shadow: 2px 3px #b1b1a4, 3px 4px #c6a39a;
     text-align: center;
     word-spacing: 9999999px;
 }
 
+image {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: translate3d(0, 0, 20px);
+}
+
 canvas {
+    /* transform: rotateX(-35deg) rotateY(0deg) rotateZ(-35deg); */
+    /* transform: rotateX(15deg) rotateZ(-25deg); */
     margin: 10px 20px 10px 20px;
     border: 1px solid black;
+    transform-style: preserve-3d;
+    perspective: 50em;
 }
 
 body {
@@ -21,8 +32,12 @@ body {
     font-weight: 700;
 }
 
-.playerRover {
-    filter: invert(100%);
+.shadow {
+    display: block;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    opacity: .9;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
 }
 
 #messageLog {

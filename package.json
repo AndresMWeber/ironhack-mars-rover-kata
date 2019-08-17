@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "play": "node src/command-line.js",
-        "build": "webpack",
+        "build": "rm -R dist; webpack --config webpack.prod.js",
         "start": "webpack-dev-server --open",
         "watch": "webpack --watch"
     },

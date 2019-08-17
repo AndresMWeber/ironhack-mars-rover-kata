@@ -3,7 +3,6 @@ const { removeFromString } = require('../utilities')
 const { sprite, sprites, directionLUT } = require('../sprite-config')
 const { gridSpriteRenderer } = require('../ascii-config')
 
-
 class HtmlUI extends UserInterface {
     constructor(gameController) {
         super(gameController)
@@ -18,6 +17,16 @@ class HtmlUI extends UserInterface {
         this.images = []
         this.spriteSourcesNum = Object.keys(sprites).length
         this.sprites = {}
+        this.pixiSprites = {}
+
+        this.app = new PIXI.Application({
+            width: 320, // default: 800
+            height: 320, // default: 600
+            antialias: true, // default: false
+            transparent: true, // default: false
+            resolution: 1 // default: 1
+        })
+        document.getElementById('gameBoard').appendChild(this.app.view)
 
         this.messageLog = document.getElementById('messageLog')
         this.bindScreenKeys(this)
@@ -30,6 +39,10 @@ class HtmlUI extends UserInterface {
             image.onload = this.resourcesLoaded.bind(this)
             this.images.push([spriteName, spriteData, image])
         }
+
+        PIXI.loader
+            .add([...Object.values(sprites).map(entry => entry.src)])
+            .load(this.resourcesLoaded.bind(this))
     }
 
     resourcesLoaded() {
@@ -46,13 +59,16 @@ class HtmlUI extends UserInterface {
                     image: image,
                     numberOfFrames: spriteData.frames
                 })
+                let pixiSprite = new PIXI.Sprite(PIXI.loader.resources[spriteData.src].texture)
+                this.pixiSprites[spriteName] = pixiSprite
+                this.app.stage.addChild(pixiSprite)
             })
             this.setTimer()
         }
     }
 
     start() {
-        this.initializeImages()
+        document.addEventListener('DOMContentLoaded', () => this.initializeImages())
     }
 
     update() {
