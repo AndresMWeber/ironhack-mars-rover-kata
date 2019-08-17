@@ -31,13 +31,16 @@ class GameController extends Observable {
     }
 
     update(playerCommand = undefined) {
-        this.notifyTurnStart()
-        try {
-            this.board.tick(this.simulation && this.playerCommands[this.turn] || playerCommand, this._generateRandomCommandList(this.board.rovers.length))
-            this.turn++;
-            this.gameOver = (this.turn >= this.playerCommands.length && this.simulation)
-        } catch (error) {
-            this.emit(error.message)
+        let command = commandsLUT[playerCommand]
+        if (command) {
+            try {
+                this.notifyTurnStart()
+                this.board.tick(this.simulation && this.playerCommands[this.turn] || command, this._generateRandomCommandList(this.board.rovers.length))
+                this.turn++;
+                this.gameOver = (this.simulation && this.turn >= this.playerCommands.length)
+            } catch (error) {
+                this.emit(error.message)
+            }
         }
     }
 

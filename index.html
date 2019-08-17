@@ -9,8 +9,15 @@
 
 <body>
     <h1 class="centered">Ironhack Mars Rover</h1>
-    <canvas class="centered flex" id="canvas" width="288" height="512"></canvas>
-    <script type="module" src="dist/main.js"></script>
+    <div class="centered flex">
+        <div id="gameBoard">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div class="float-right flex" id="messageLog">
+        </div>
+    </div>
+    <script type="module" src="dist/index.js"></script>
+
 </body>
 
 </html>

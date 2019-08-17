@@ -17,16 +17,18 @@ const compass = {
     3: 'W'
 }
 
+const validCommands = ['moveForward', 'turnRight', 'turnLeft', 'moveBackward']
 const commandsLUT = {
-    'f': 'moveForward',
-    'r': 'turnRight',
-    'l': 'turnLeft',
-    'b': 'moveBackward'
+    'f': validCommands[0],
+    'r': validCommands[1],
+    'l': validCommands[2],
+    'b': validCommands[3]
 }
 
 module.exports = {
     commandsLUT,
     runtimes,
     directionLUT,
-    compass
+    compass,
+    validCommands
 }

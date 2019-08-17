@@ -3,7 +3,8 @@ class UserInterface {
         this.gameController = gameController
         this.paused = false
         this.timer = null
-        this.fps = 30
+        this.lastTurn = 0
+        this.fps = 1
         this.updateInterval = 1000
         this.gameController.addObserver(this.drawMessage.bind(this))
     }
@@ -23,9 +24,10 @@ class UserInterface {
             this.clearScreen()
             this.preDraw()
             this.drawGrid()
-            this.postDraw()
             this.render()
+            this.postDraw()
             this.isGameOver()
+            this.lastTurn = this.gameController.turn
         }
     }
 
@@ -50,7 +52,7 @@ class UserInterface {
     }
 
     render() {
-        this.ui.drawGrid()
+        this.drawGrid()
     }
 
     drawGrid(grid) {
@@ -66,7 +68,7 @@ class UserInterface {
     }
 
     postDraw() {
-        this.gameController.notifyTurnEnd()
+        this.lastTurn !== this.gameController.turn && this.gameController.notifyTurnEnd()
     }
 
     clearScreen() {

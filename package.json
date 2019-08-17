@@ -1,32 +1,31 @@
 {
-  "name": "ironhack-mars-rover-kata",
-  "version": "1.0.0",
-  "description": "",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "play": "node src/command-line.js",
-    "rebuild-start": "rm -R dist; webpack; http-server -c-1",
-    "build": "webpack",
-    "start": "webpack-dev-server --open",
-    "watch": "webpack --watch"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "css-loader": "^3.2.0",
-    "html-webpack-plugin": "^3.2.0",
-    "postcss-loader": "^3.0.0",
-    "style-loader": "^1.0.0",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.39.2",
-    "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.8.0"
-  }
+    "name": "ironhack-mars-rover-kata",
+    "version": "1.0.0",
+    "description": "",
+    "private": true,
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "play": "node src/command-line.js",
+        "build": "webpack",
+        "start": "webpack-dev-server --open",
+        "watch": "webpack --watch"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {},
+    "devDependencies": {
+        "@babel/core": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
+        "babel-loader": "^8.0.6",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "css-loader": "^3.2.0",
+        "html-webpack-plugin": "^3.2.0",
+        "postcss-loader": "^3.0.0",
+        "style-loader": "^1.0.0",
+        "uglifyjs-webpack-plugin": "^2.2.0",
+        "webpack": "^4.39.2",
+        "webpack-cli": "^3.3.6",
+        "webpack-dev-server": "^3.8.0"
+    }
 }

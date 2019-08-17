@@ -1,5 +1,5 @@
 const { Rover } = require('./rover')
-const { commandsLUT } = require('../config')
+const { commandsLUT, validCommands } = require('../config')
 const { GRID_SPRITE_TEMPLATE, SPRITE } = require('../ascii-config')
 const { Observable, compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('../utilities')
 
@@ -50,7 +50,7 @@ class Board extends Observable {
     }
 
     takeRoverTurn(rover, command) {
-        if (commandsLUT[command]) {
+        if (validCommands.includes(command)) {
             this.clearGridPosition(rover.position)
             rover[command]()
             this.updateGridPosition(rover.position, rover)
