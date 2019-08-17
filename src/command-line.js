@@ -1,6 +1,6 @@
-const { GameController } = require('./controllers/controller')
-const { runtimes } = require('./config')
-const readline = require('readline');
+import { GameController } from './controllers/controller'
+import { runtimes } from './config'
+import { readline } from 'readline'
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -28,7 +28,7 @@ const question2 = () => {
     })
 }
 
-const main = async () => {
+const main = async() => {
     await question1()
     await question2()
     rl.close()

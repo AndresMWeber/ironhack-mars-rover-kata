@@ -1,4 +1,4 @@
-class Observable {
+export class Observable {
     constructor() {
         this.observers = []
         this.messageHistory = []
@@ -14,7 +14,7 @@ class Observable {
     }
 }
 
-function arraySum(array1, array2, array_size = 2) {
+export function arraySum(array1, array2, array_size = 2) {
     var array_result = Array()
     for (i = 0; i < array_size; i++) {
         array_result.push(array1[i] + array2[i])
@@ -22,33 +22,32 @@ function arraySum(array1, array2, array_size = 2) {
     return array_result
 }
 
-function generateRandomNotInRange(min, max, avoidMin, avoidMax) {
+export function generateRandomNotInRange(min, max, avoidMin, avoidMax) {
     return [Math.floor(Math.random() * (avoidMin - min + 1)) + min, Math.floor(Math.random() * (avoidMax - max + 1)) + max][Math.random() < 0.5 ? 0 : 1]
 }
 
-function generateRandomInt(max) {
+export function generateRandomInt(max) {
     return Math.floor(Math.random() * (max + 1))
 }
 
-function removeFromString(line, deleteList) {
+export function removeFromString(line, deleteList) {
     deleteList.map((deletion) => line = line.split(deletion).join(''))
     return line
 }
 
-function getFileTimestamp() {
+export function getFileTimestamp() {
     var d = new Date
-    return [d.getMonth() + 1, d.getDate(), d.getFullYear()].join('-') + '_' +
-        [d.getHours(), d.getMinutes(), d.getSeconds()].join('-')
+    return [d.getMonth() + 1, d.getDate(), d.getFullYear()].join('-') + '_' + [d.getHours(), d.getMinutes(), d.getSeconds()].join('-')
 }
 
-function generatePositionInGrid(grid_max, not_over, not_below) {
+export function generatePositionInGrid(grid_max, not_over, not_below) {
     return [
         generateRandomNotInRange(0, grid_max, not_over, not_below),
         generateRandomNotInRange(0, grid_max, not_over, not_below)
     ]
 }
 
-function compareNDArrays(arr1, arr2) {
+export function compareNDArrays(arr1, arr2) {
     let result;
 
     arr1.forEach((e1, _) => arr2.forEach(e2 => {
@@ -62,19 +61,7 @@ function compareNDArrays(arr1, arr2) {
     return result
 }
 
-function generatePseudoRandomName() {
+export function generatePseudoRandomName() {
     let names = ['Edward', 'Craig', 'Brian', 'Logan', 'Mable', 'Willard', 'Copeland', 'Marcus', 'Alvarado', 'Clara', 'Moreno', 'Ronald', 'Gonzales', 'Veronica', 'Richards', 'Hattie', 'Glover', 'Roxanne', 'Henry']
     return names[generateRandomInt(names.length - 1)]
-}
-
-module.exports = {
-    generateRandomInt,
-    generatePositionInGrid,
-    generateRandomNotInRange,
-    generatePseudoRandomName,
-    arraySum,
-    compareNDArrays,
-    getFileTimestamp,
-    removeFromString,
-    Observable
 }

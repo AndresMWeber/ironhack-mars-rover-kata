@@ -1,10 +1,8 @@
-const { directionLUT, compass } = require('../config')
-const { playerSpriteRenderer, roverSpriteRenderer } = require('../ascii-config')
-const { arraySum } = require('../utilities')
+import { directionLUT, compass } from '../config'
+import { playerSpriteRenderer, roverSpriteRenderer } from '../ascii-config'
+import { arraySum } from '../utilities'
 
-// Rover Object Goes Here
-// ======================
-class Rover {
+export class Rover {
     constructor(name, start_pos, direction, board) {
         this.name = name
         this.position = start_pos
@@ -72,9 +70,4 @@ class Rover {
         }
         return directionIndex + modifier
     }
-}
-
-
-module.exports = {
-    Rover
 }

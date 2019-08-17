@@ -1,8 +1,8 @@
-const { UserInterface } = require('./ui')
-const { removeFromString } = require('../utilities')
-const { sprite } = require('./sprite')
+import { UserInterface } from './ui'
+import { removeFromString } from '../utilities'
+import { sprite } from './sprite'
 
-class HtmlUI extends UserInterface {
+export class HtmlUI extends UserInterface {
     constructor(gameController) {
         super(gameController)
         this.pause_delta = new Date()
@@ -102,7 +102,6 @@ class HtmlUI extends UserInterface {
     drawGrid() {
         let grid = this.renderGrid(this.gameController.board.grid)
         for (let i = 0; i < grid.length; i++) {
-            continue
             // this.gameContainer.setLine(i, `{center} ${grid[i].join(' ')} {/center}`)
         }
     }
@@ -117,5 +116,3 @@ class HtmlUI extends UserInterface {
         });
     }
 }
-
-module.exports = { HtmlUI }
