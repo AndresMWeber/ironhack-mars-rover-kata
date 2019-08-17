@@ -1,6 +1,6 @@
-import { GameController } from './controllers/controller'
-import { runtimes } from './config'
-import { readline } from 'readline'
+const { GameController } = requires('./controllers/controller')
+const { runtimes } = requires('./config')
+const { readline } = requires('readline')
 
 const rl = readline.createInterface({
     input: process.stdin,

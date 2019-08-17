@@ -6,14 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "play": "node src/command-line.js",
-    "build": "webpack --mode development",
-    "play-web": "http-server -c-1",
-    "rebuild-web": "rm -R dist; webpack --mode development; http-server -c-1"
+    "rebuild-start": "rm -R dist; webpack; http-server -c-1",
+    "build": "webpack",
+    "start": "webpack-dev-server --open",
+    "watch": "webpack --watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -24,6 +27,7 @@
     "style-loader": "^1.0.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.8.0"
   }
 }

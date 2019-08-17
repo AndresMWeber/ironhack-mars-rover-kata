@@ -1,8 +1,8 @@
-import { UserInterface } from './ui'
-import { removeFromString } from '../utilities'
-import { sprite } from './sprite'
+const { UserInterface } = require('./ui')
+const { removeFromString } = require('../utilities')
+const { sprite } = require('./sprite')
 
-export class HtmlUI extends UserInterface {
+class HtmlUI extends UserInterface {
     constructor(gameController) {
         super(gameController)
         this.pause_delta = new Date()
@@ -115,4 +115,8 @@ export class HtmlUI extends UserInterface {
             if (e.key == ' ' || e.key == 'p') ui.pause()
         });
     }
+}
+
+module.exports = {
+    HtmlUI
 }

@@ -1,8 +1,8 @@
-import { directionLUT, compass } from '../config'
-import { playerSpriteRenderer, roverSpriteRenderer } from '../ascii-config'
-import { arraySum } from '../utilities'
+const { directionLUT, compass } = require('../config')
+const { playerSpriteRenderer, roverSpriteRenderer } = require('../ascii-config')
+const { arraySum } = require('../utilities')
 
-export class Rover {
+class Rover {
     constructor(name, start_pos, direction, board) {
         this.name = name
         this.position = start_pos
@@ -49,7 +49,7 @@ export class Rover {
     }
 
     move(direction) {
-        this.report(`Moving in direction ${directionLUT[direction]} while facing ${this.direction} from ${this.position}`)
+        this.report(`Moving in direction ${directionLUT[direction]} while facing ${this.direction} = require(${this.position}`)
         try {
             let future_position = arraySum(this.position, directionLUT[direction])
             this.position = this.board.validMove(future_position)
@@ -70,4 +70,8 @@ export class Rover {
         }
         return directionIndex + modifier
     }
+}
+
+module.exports = {
+    Rover
 }

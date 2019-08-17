@@ -5,6 +5,7 @@ const uglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
+    mode: 'development',
     output: {
         library: 'UserList',
         libraryTarget: 'umd',

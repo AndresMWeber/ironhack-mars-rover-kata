@@ -1,9 +1,9 @@
-import { Board } from '../models/board'
-import { HtmlUI } from '../views/ui-html'
-import { runtimes, commandsLUT } from '../config'
-import { getFileTimestamp, Observable, generateRandomInt } from '../utilities'
+const { Board } = require('../models/board')
+const { HtmlUI } = require('../views/ui-html')
+const { runtimes, commandsLUT } = require('../config')
+const { getFileTimestamp, Observable, generateRandomInt } = require('../utilities')
 
-export class GameController extends Observable {
+class GameController extends Observable {
     constructor(boardSize, runtime) {
         super()
         this.runtime = runtime
@@ -80,4 +80,8 @@ export class GameController extends Observable {
     _generateRandomCommandList(length) {
         return Array.from({ length: length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
     }
+}
+
+module.exports = {
+    GameController
 }

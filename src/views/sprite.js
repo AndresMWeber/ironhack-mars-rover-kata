@@ -1,4 +1,4 @@
-export function sprite(options) {
+function sprite(options) {
     var that = {},
         frameIndex = 0,
         tickCount = 0,
@@ -38,4 +38,8 @@ export function sprite(options) {
             that.height)
     }
     return that
+}
+
+module.exports = {
+    sprite
 }

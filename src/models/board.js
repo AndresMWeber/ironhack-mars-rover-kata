@@ -1,10 +1,10 @@
-import { Rover } from './rover'
-import { commandsLUT } from '../config'
-import { GRID_SPRITE_TEMPLATE, SPRITE } from '../ascii-config'
-import { Observable, compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } from '../utilities'
+const { Rover } = require('./rover')
+const { commandsLUT } = require('../config')
+const { GRID_SPRITE_TEMPLATE, SPRITE } = require('../ascii-config')
+const { Observable, compareNDArrays, generatePositionInGrid, generateRandomInt, generatePseudoRandomName } = require('../utilities')
 
 
-export class Board extends Observable {
+class Board extends Observable {
     constructor(tiles = 10, roverCount = 3, obstacleCount = 5) {
         super()
         this.width = (tiles >= 8 && tiles <= 20) ? tiles + (tiles % 2) : 10
@@ -88,4 +88,8 @@ export class Board extends Observable {
         }
         return position
     }
+}
+
+module.exports = {
+    Board
 }

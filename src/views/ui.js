@@ -1,4 +1,4 @@
-export class UserInterface {
+class UserInterface {
     constructor(gameController) {
         this.gameController = gameController
         this.paused = false
@@ -76,4 +76,8 @@ export class UserInterface {
     bindScreenKeys() {
         throw new Error('You have to implement the method bindScreenKeys!')
     }
+}
+
+module.exports = {
+    UserInterface
 }
