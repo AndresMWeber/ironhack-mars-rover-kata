@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const uglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
 
@@ -36,8 +36,16 @@ module.exports = {
         ]
     },
     plugins: [
-        new uglifyJsPlugin(),
-        new HTMLWebpackPlugin(),
+        new TerserPlugin({
+            parallel: true,
+            terserOptions: {
+                ecma: 6,
+            },
+        }),
+        new HTMLWebpackPlugin({
+            template: path.resolve('index.html'),
+            filename: './index.html'
+        }),
         new DynamicCdnWebpackPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({

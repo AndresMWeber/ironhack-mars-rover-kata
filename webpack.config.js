@@ -1,9 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
-const uglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
+const uglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
     entry: './src/index.js',
@@ -32,22 +32,18 @@ module.exports = {
                     'css-loader',
                 ],
             }
-
         ]
     },
     plugins: [
-        new uglifyJsPlugin(),
-        new HTMLWebpackPlugin(),
-        new DynamicCdnWebpackPlugin(),
+        new HTMLWebpackPlugin({
+            template: path.resolve(),
+            filename: './index.html'
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css',
             ignoreOrder: false,
-        }),
-        new webpack.ProvidePlugin({
-            Smoothie: 'smoothie',
-            PIXI: 'pixi'
         })
     ]
 };

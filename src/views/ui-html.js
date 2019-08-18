@@ -2,7 +2,8 @@ const { UserInterface } = require('./ui')
 const { removeFromString } = require('../utilities')
 const { directionLUT } = require('../sprite-config')
 const { gridSpriteRenderer } = require('../ascii-config')
-const { Smoothie } = require('smoothie')
+const PIXI = require('pixi-shim')
+const { Smoothie } = require('./smoothie')
 
 
 var Sprite = PIXI.Sprite,
