@@ -1,111 +1,70 @@
 const { UserInterface } = require('./ui')
 const { removeFromString } = require('../utilities')
-const { directionLUT } = require('../sprite-config')
+const { sprite, sprites, directionLUT } = require('../sprite-config')
 const { gridSpriteRenderer } = require('../ascii-config')
-const { Smoothie } = require('smoothie')
-
-
-var Sprite = PIXI.Sprite,
-    AnimatedSprite = PIXI.AnimatedSprite
-
-const labelData = {
-    fontFamily: 'Press Start 2P',
-    fontSize: 6,
-    fill: 'purple',
-    align: 'right',
-}
-
 
 class HtmlUI extends UserInterface {
     constructor(gameController) {
         super(gameController)
         this.pause_delta = new Date()
-
-        this.rovers = []
-        this.player = undefined
-        this.obstacles = []
-        this.spacing = 32
+        this.canvas = document.getElementById('canvas')
+        this.context = this.canvas.getContext('2d')
+        this.canvas.height = 10 * 32
+        this.canvas.width = 10 * 32
 
         this.firstRun = true
+        this.loadedResources = 0
+        this.images = []
+        this.spriteSourcesNum = Object.keys(sprites).length
+        this.sprites = {}
         this.pixiSprites = {}
 
-
         this.app = new PIXI.Application({
-            width: this.spacing * 10, // default: 800
-            height: this.spacing * 10, // default: 600
+            width: 320, // default: 800
+            height: 320, // default: 600
             antialias: true, // default: false
             transparent: true, // default: false
             resolution: 1 // default: 1
         })
-        this.smoothie = new Smoothie({
-            engine: this.app,
-            renderer: this.app.renderer,
-            root: this.app.stage,
-            fps: 10,
-            update: this.update.bind(this)
-        });
-
         document.getElementById('gameBoard').appendChild(this.app.view)
+
         this.messageLog = document.getElementById('messageLog')
         this.bindScreenKeys(this)
     }
 
     initializeImages() {
+        for (const [spriteName, spriteData] of Object.entries(sprites)) {
+            let image = new Image()
+            image.src = spriteData.src
+            image.onload = this.resourcesLoaded.bind(this)
+            this.images.push([spriteName, spriteData, image])
+        }
+
         PIXI.loader
-            .add("../../media/images/mars.json")
+            .add([...Object.values(sprites).map(entry => entry.src)])
             .load(this.resourcesLoaded.bind(this))
     }
 
     resourcesLoaded() {
-        let id = PIXI.loader.resources["../../media/images/mars.json"].textures;
-
-        this.app.stage.addChild(new PIXI.TilingSprite(id['Sand.png'], this.app.screen.width, this.app.screen.height))
-
-
-        let player = this.gameController.board.player
-        this.player = { 'object': player, 'sprites': {} }
-        Object.values(directionLUT).map(direction => {
-            let playerSprite = new AnimatedSprite([0, 1, 2, 3].map(i => id[`rover.player.${direction}.${i}.png`]))
-            let [y, x] = player.position
-            playerSprite.x = x * this.spacing
-            playerSprite.y = y * this.spacing
-            playerSprite.animationSpeed = .2
-            playerSprite.play()
-            this.app.stage.addChild(playerSprite)
-            this.player.sprites[direction] = playerSprite
-        })
-        this.player.label = new PIXI.Text(this.player.object.name, labelData)
-        this.player.label.anchor.set(0.5, 0.5);
-        this.app.stage.addChild(this.player.label)
-
-        this.gameController.board.obstacles.map(obstacle => {
-            let obstacleSprite = new Sprite(id["Obstacle.png"]);
-            let [y, x] = obstacle
-            obstacleSprite.x = x * this.spacing
-            obstacleSprite.y = y * this.spacing
-            this.app.stage.addChild(obstacleSprite)
-            this.obstacles.push({ 'object': obstacle, 'sprite': obstacleSprite })
-        })
-
-        this.gameController.board.rovers.map(rover => {
-            let roverData = { 'object': rover, 'sprites': {} }
-            Object.values(directionLUT).map(direction => {
-                let roverSprite = new AnimatedSprite([0, 1, 2, 3].map(i => id[`rover.${direction}.${i}.png`]))
-                let [y, x] = rover.position
-                roverSprite.x = x * this.spacing
-                roverSprite.y = y * this.spacing
-                this.app.stage.addChild(roverSprite)
-                roverData.sprites[direction] = roverSprite
-                roverSprite.animationSpeed = .2
-                roverSprite.play()
+        this.loadedResources++;
+        if (this.loadedResources === this.spriteSourcesNum) {
+            this.images.map((imageData) => {
+                var [spriteName, spriteData, image] = imageData
+                this.sprites[spriteName] = sprite({
+                    context: this.context,
+                    width: spriteData.width,
+                    height: spriteData.height,
+                    x: 0,
+                    y: 0,
+                    image: image,
+                    numberOfFrames: spriteData.frames
+                })
+                let pixiSprite = new PIXI.Sprite(PIXI.loader.resources[spriteData.src].texture)
+                this.pixiSprites[spriteName] = pixiSprite
+                this.app.stage.addChild(pixiSprite)
             })
-
-            roverData.label = new PIXI.Text(roverData.object.name, Object.assign(labelData, { 'fill': 'darkRed' }))
-            roverData.label.anchor.set(0.5, 0.5)
-            this.app.stage.addChild(roverData.label)
-            this.rovers.push(roverData)
-        })
-        this.smoothie.start()
+            this.setTimer()
+        }
     }
 
     start() {
@@ -114,6 +73,7 @@ class HtmlUI extends UserInterface {
 
     update() {
         if (!this.paused) {
+            this.clearScreen()
             this.preDraw()
             this.drawGrid()
             this.render()
@@ -122,6 +82,7 @@ class HtmlUI extends UserInterface {
             this.lastTurn = this.gameController.turn
         }
         this.firstRun = false
+        requestAnimationFrame(this.update.bind(this))
     }
 
     onGameOver() {
@@ -130,6 +91,9 @@ class HtmlUI extends UserInterface {
 
     render() {
         this.lastTurn !== this.gameController.turn && this.renderGrid(this.gameController.board.grid)
+        Object.keys(this.sprites).map((sprite) => {
+            this.sprites[sprite].update()
+        })
     }
 
     renderGrid(grid) {
@@ -151,18 +115,34 @@ class HtmlUI extends UserInterface {
     }
 
     drawGrid() {
-        this.rovers.concat([this.player]).map(roverData => {
-            Object.values(directionLUT).map(direction => {
-                let rover = roverData.object
-                let sprite = roverData.sprites[direction]
-                let label = roverData.label
-                directionLUT[rover.direction] === direction ? sprite.visible = true : sprite.visible = false
-                sprite.x = rover.x * this.spacing
-                sprite.y = rover.y * this.spacing
-                label.x = sprite.x + this.spacing / 2
-                label.y = sprite.y + this.spacing
-            })
-        })
+        let grid = this.gameController.board.grid
+        for (let i = 0; i < grid.length; i++) {
+            for (let j = 0; j < grid.length; j++) {
+                let gridSpace = grid[j][i]
+                let newPosition = [i * 32, j * 32]
+                this.firstRun && this.sprites['sand'].render(newPosition)
+
+                switch (gridSpace === undefined ? undefined : gridSpace.constructor.name) {
+                    case "Rover":
+                        let lastPosition = gridSpace.travel_log[gridSpace.travel_log.length - 2] || newPosition
+                        lastPosition = lastPosition.map(e => e * 32).reverse()
+                        this.context.clearRect(lastPosition[0], lastPosition[1], 32, 32)
+                        this.context.clearRect(newPosition[0], newPosition[1], 32, 32)
+                        this.sprites['sand'].render(lastPosition)
+                        this.sprites['sand'].render(newPosition)
+                        this.sprites[`rover-${gridSpace.name === 'Starlord' ? 'player-' : ''}${directionLUT[gridSpace.direction]}`].render(newPosition)
+                        break
+                    case "String":
+                        this.firstRun && this.sprites['obstacle'].render(newPosition)
+                        break
+                }
+
+            }
+        }
+    }
+
+    clearScreen() {
+        return null
     }
 
     bindScreenKeys(ui) {

@@ -15,14 +15,6 @@ class Rover {
         return (this.name === 'Starlord') ? playerSpriteRenderer[this._direction] : roverSpriteRenderer[this._direction]
     }
 
-    get x() {
-        return this.position[1]
-    }
-
-    get y() {
-        return this.position[0]
-    }
-
     get direction() {
         return compass[this._direction]
     }

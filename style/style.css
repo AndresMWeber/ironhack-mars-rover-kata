@@ -17,7 +17,7 @@ image {
 }
 
 canvas {
-    /* transform: rotateX(-35deg) rotateY(0deg) rotateZ(35deg); */
+    /* transform: rotateX(-35deg) rotateY(0deg) rotateZ(-35deg); */
     /* transform: rotateX(15deg) rotateZ(-25deg); */
     margin: 10px 20px 10px 20px;
     border: 1px solid black;
@@ -32,15 +32,12 @@ body {
     font-weight: 700;
 }
 
-p {
-    line-height: .5rem;
-    font-size: .5rem;
-    padding-top: 5px;
-}
-
-#gameBoard {
-    min-width: 320;
-    min-height: 320;
+.shadow {
+    display: block;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    opacity: .9;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
 }
 
 #messageLog {
@@ -58,12 +55,10 @@ p {
     display: inline-block;
 }
 
-.shadow {
-    display: block;
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    opacity: .9;
-    background-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+p {
+    line-height: .5rem;
+    font-size: .5rem;
+    padding-top: 5px;
 }
 
 .center-content {

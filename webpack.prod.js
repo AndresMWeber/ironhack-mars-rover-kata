@@ -2,12 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const uglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
     mode: 'production',
+    devtool: 'source-map',
     output: {
         library: 'UserList',
         libraryTarget: 'umd',
@@ -22,28 +21,21 @@ module.exports = {
                 use: ['babel-loader']
             },
             {
-                test: /\.css$/,
-                use: [{
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            hmr: process.env.NODE_ENV === 'development',
-                        },
-                    },
+                test: /\.scss$/,
+                use: [
+                    'style-loader',
                     'css-loader',
-                ],
-            },
-
+                    'postcss-loader',
+                    'sass-loader'
+                ]
+            }
         ]
     },
     plugins: [
         new uglifyJsPlugin(),
-        new HTMLWebpackPlugin(),
-        new DynamicCdnWebpackPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-            ignoreOrder: false,
+        new HTMLWebpackPlugin({
+            template: path.resolve(__dirname, 'index.html')
         }),
+        new webpack.HotModuleReplacementPlugin(),
     ]
 };
