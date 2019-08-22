@@ -2,7 +2,7 @@
 
 A terminal-based Mars Rover Simulator written in JavaScript (Node.js).
 
-![demo.gif](media/demo_v2.gif)
+![demo.gif](media/demo.gif)
 
 ## Instructions
 ### Hotkeys:
