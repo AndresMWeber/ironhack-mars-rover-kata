@@ -1,7 +1,7 @@
 # 🌌🚀🤖☄️🌑🌌
 # Ironhack Mars Rover Kata [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-A terminal-based Mars Rover Simulator written in JavaScript (Node.js).
+A JS canvas-based Mars Rover Simulator written in JavaScript (Node.js).
 
 ![demo.gif](media/demo_v3.gif)
 
