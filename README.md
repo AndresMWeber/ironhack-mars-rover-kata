@@ -1,4 +1,5 @@
-# 🌌🚀🤖☄️🌑🌌 Ironhack Mars Rover Kata [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+# 🌌🚀🤖☄️🌑🌌
+# Ironhack Mars Rover Kata [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A terminal-based Mars Rover Simulator written in JavaScript (Node.js).
 
@@ -36,8 +37,7 @@ Feel free to just hit `Enter` twice and run the game in default mode (you can re
 
 After running the simulation it will always generate a log file you can look at to see the steps and travel log in more detail.  
 The filename is in the format: ```roverLog_DD-MM-YYYY_HH-MM-SS.log``` and you will find it in the directory you ran the script from.
-Here is an [example log file]() generated from the gif above.
-
+Here is an [example log file](media/sample_log_file.log) generated from the gif above.
 
 Notice the travel map at the end which shows you the path they've taken.  Note that it will not show you if the rover has been over a spot multiple times, just shows the path with overlaps.
 
