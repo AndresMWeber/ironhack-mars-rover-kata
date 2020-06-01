@@ -1,8 +1,8 @@
 {
   "name": "ironhack-mars-rover-kata",
-  "version": "1.0.0",
-  "description": "",
-  "private": true,
+  "version": "2.0.0",
+  "description": "A variation of the Ironhack Coding Bootcamp challenge.",
+  "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "play": "node src/command-line.js",
@@ -11,7 +11,7 @@
     "build": "webpack --config build/webpack.config.js --env.env=prod",
     "build:analyze": "npm run build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer"
   },
-  "author": "",
+  "author": "Andres Weber",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.5.5",
