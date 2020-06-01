@@ -15,7 +15,7 @@ class Observable {
 }
 
 function arraySum(array1, array2, array_size = 2) {
-  var array_result = Array()
+  const array_result = Array()
   for (i = 0; i < array_size; i++) {
     array_result.push(array1[i] + array2[i])
   }
@@ -39,12 +39,12 @@ function removeFromString(line, deleteList) {
 }
 
 function getFileTimestamp() {
-  var d = new Date()
-  return (
-    [d.getMonth() + 1, d.getDate(), d.getFullYear()].join('-') +
-    '_' +
-    [d.getHours(), d.getMinutes(), d.getSeconds()].join('-')
-  )
+  const d = new Date()
+  return `${[d.getMonth() + 1, d.getDate(), d.getFullYear()].join('-')}_${[
+    d.getHours(),
+    d.getMinutes(),
+    d.getSeconds(),
+  ].join('-')}`
 }
 
 function generatePositionInGrid(grid_max, not_over, not_below) {
@@ -71,7 +71,7 @@ function compareNDArrays(arr1, arr2) {
 }
 
 function generatePseudoRandomName() {
-  let names = [
+  const names = [
     'Edward',
     'Craig',
     'Brian',

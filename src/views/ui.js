@@ -47,7 +47,6 @@ class UserInterface {
       this.gameController.addLogLine('TRAVEL MAP FOR ALL ROVERS:')
       this.renderGrid(this.gameController.board.generateTravelLogBoard())
       this.gameController.onGameOver()
-      return
     }
   }
 

@@ -5,3 +5,4 @@ singleQuote: true
 useTabs: false
 printWidth: 100
 rcVerbose: true
+endOfLine: auto

@@ -1,9 +1,9 @@
 function sprite(options) {
-  var that = {},
-    frameIndex = 0,
-    tickCount = 0,
-    ticksPerFrame = options.ticksPerFrame || 200,
-    numberOfFrames = options.numberOfFrames || 1
+  const that = {}
+  let frameIndex = 0
+  let tickCount = 0
+  const ticksPerFrame = options.ticksPerFrame || 200
+  const numberOfFrames = options.numberOfFrames || 1
 
   that.context = options.context
   that.width = options.width
@@ -23,7 +23,7 @@ function sprite(options) {
   }
 
   that.render = function (position = [0, 0]) {
-    let [x, y] = position
+    const [x, y] = position
     that.context.beginPath()
     that.context.drawImage(
       that.image,

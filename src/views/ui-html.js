@@ -24,7 +24,7 @@ class HtmlUI extends UserInterface {
 
   initializeImages() {
     for (const [spriteName, spriteData] of Object.entries(sprites)) {
-      let image = new Image()
+      const image = new Image()
       image.src = spriteData.src
       image.onload = this.resourcesLoaded.bind(this)
       this.images.push([spriteName, spriteData, image])
@@ -35,14 +35,14 @@ class HtmlUI extends UserInterface {
     this.loadedResources++
     if (this.loadedResources === this.spriteSourcesNum) {
       this.images.map((imageData) => {
-        var [spriteName, spriteData, image] = imageData
+        const [spriteName, spriteData, image] = imageData
         this.sprites[spriteName] = sprite({
           context: this.context,
           width: spriteData.width,
           height: spriteData.height,
           x: 0,
           y: 0,
-          image: image,
+          image,
           numberOfFrames: spriteData.frames,
         })
       })
@@ -80,7 +80,7 @@ class HtmlUI extends UserInterface {
   }
 
   renderGrid(grid) {
-    let renderedGrid = grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
+    const renderedGrid = grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
     this.gameController.addLogLine(
       renderedGrid.map((row) =>
         removeFromString(row.join(' '), ['{/}', '{#5f5f00-fg}', '{#98e85a-fg}'])
@@ -94,20 +94,20 @@ class HtmlUI extends UserInterface {
   }
 
   drawMessage(message) {
-    let p = document.createElement('P')
-    let t = document.createTextNode(message)
+    const p = document.createElement('P')
+    const t = document.createTextNode(message)
     p.appendChild(t)
     this.messageLog.appendChild(p)
     this.messageLog.scrollBy({ y: 12 })
   }
 
   drawGrid() {
-    let grid = this.gameController.board.grid
+    const { grid } = this.gameController.board
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid.length; j++) {
-        let gridSpace = grid[j][i]
-        let newPosition = [i * 32, j * 32]
-        this.firstRun && this.sprites['sand'].render(newPosition)
+        const gridSpace = grid[j][i]
+        const newPosition = [i * 32, j * 32]
+        this.firstRun && this.sprites.sand.render(newPosition)
 
         switch (gridSpace === undefined ? undefined : gridSpace.constructor.name) {
           case 'Rover':
@@ -115,8 +115,8 @@ class HtmlUI extends UserInterface {
             lastPosition = lastPosition.map((e) => e * 32).reverse()
             this.context.clearRect(lastPosition[0], lastPosition[1], 32, 32)
             this.context.clearRect(newPosition[0], newPosition[1], 32, 32)
-            this.sprites['sand'].render(lastPosition)
-            this.sprites['sand'].render(newPosition)
+            this.sprites.sand.render(lastPosition)
+            this.sprites.sand.render(newPosition)
             this.sprites[
               `rover-${gridSpace.name === 'Starlord' ? 'player-' : ''}${
                 directionLUT[gridSpace.direction]
@@ -124,7 +124,7 @@ class HtmlUI extends UserInterface {
             ].render(newPosition)
             break
           case 'String':
-            this.firstRun && this.sprites['obstacle'].render(newPosition)
+            this.firstRun && this.sprites.obstacle.render(newPosition)
             break
         }
       }

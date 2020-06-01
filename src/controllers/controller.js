@@ -22,7 +22,7 @@ class GameController extends Observable {
     if (this.simulation) {
       this.initializeCommands(playerCommands)
       this.emit('Player Commands list:')
-      this.playerCommands.map((command) => this.emit('    ' + command))
+      this.playerCommands.map((command) => this.emit(`    ${command}`))
     }
   }
 
@@ -31,7 +31,7 @@ class GameController extends Observable {
   }
 
   update(playerCommand = undefined) {
-    let command = commandsLUT[playerCommand]
+    const command = commandsLUT[playerCommand]
     if (command) {
       try {
         this.notifyTurnStart()
@@ -64,7 +64,7 @@ class GameController extends Observable {
   }
 
   writeLogFile() {
-    var filePath = `roverLog_${getFileTimestamp()}.log`
+    const filePath = `roverLog_${getFileTimestamp()}.log`
 
     this.messageHistory.map((message) => {
       if (!Array.isArray(message)) {
@@ -88,7 +88,7 @@ class GameController extends Observable {
   }
 
   _generateRandomCommandList(length) {
-    return Array.from({ length: length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
+    return Array.from({ length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
   }
 }
 

@@ -29,8 +29,8 @@ class Board extends Observable {
   }
 
   generateTravelLogBoard() {
-    let board = this.generateEmptyGrid()
-    let rovers = this.rovers.concat([this.player])
+    const board = this.generateEmptyGrid()
+    const rovers = this.rovers.concat([this.player])
     rovers.map((rover) => {
       rover.ascii_override = GRID_SPRITE_TEMPLATE.replace(SPRITE, rover.name[0])
       rover.travel_log.map((position) => (board[position[0]][position[1]] = rover))
@@ -100,13 +100,13 @@ class Board extends Observable {
   }
 
   _generateRandomValidSpawnPoint() {
-    //TODO: This is super badly implemented.
-    let position = generatePositionInGrid(
+    // TODO: This is super badly implemented.
+    const position = generatePositionInGrid(
       this.width,
       this.player.position[0],
       this.player.position[1]
     )
-    let occupiedPositions = this.occupiedPositions()
+    const occupiedPositions = this.occupiedPositions()
     while (occupiedPositions.some((occupied) => compareNDArrays(occupied, position))) {
       return this._generateRandomValidSpawnPoint()
     }
