@@ -9,6 +9,7 @@ lerna-debug.log*
 .vscode/
 *.txt
 dist/*hot-update.*
+.env*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

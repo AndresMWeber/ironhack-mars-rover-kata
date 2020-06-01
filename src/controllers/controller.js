@@ -4,87 +4,94 @@ const { runtimes, commandsLUT } = require('../config')
 const { getFileTimestamp, Observable, generateRandomInt } = require('../utilities')
 
 class GameController extends Observable {
-    constructor(boardSize, runtime) {
-        super()
-        this.runtime = runtime
-        this.ui = new HtmlUI(this)
-        this.simulation = this.runtime === runtimes[0]
-        this.gameOver = false
-        this.turn = 0
-        this.playerCommands = undefined
-        this.roverCommands = []
-        this.board = new Board(boardSize)
-        this.board.addObserver(this.emit.bind(this))
+  constructor(boardSize, runtime) {
+    super()
+    this.runtime = runtime
+    this.ui = new HtmlUI(this)
+    this.simulation = this.runtime === runtimes[0]
+    this.gameOver = false
+    this.turn = 0
+    this.playerCommands = undefined
+    this.roverCommands = []
+    this.board = new Board(boardSize)
+    this.board.addObserver(this.emit.bind(this))
+  }
+
+  start(playerCommands) {
+    this.ui.start()
+    if (this.simulation) {
+      this.initializeCommands(playerCommands)
+      this.emit('Player Commands list:')
+      this.playerCommands.map((command) => this.emit('    ' + command))
     }
+  }
 
-    start(playerCommands) {
-        this.ui.start()
-        if (this.simulation) {
-            this.initializeCommands(playerCommands)
-            this.emit('Player Commands list:')
-            this.playerCommands.map((command) => this.emit('    ' + command))
-        }
+  reset() {
+    this.board.initialize()
+  }
+
+  update(playerCommand = undefined) {
+    let command = commandsLUT[playerCommand]
+    if (command) {
+      try {
+        this.notifyTurnStart()
+        this.board.tick(
+          (this.simulation && this.playerCommands[this.turn]) || command,
+          this._generateRandomCommandList(this.board.rovers.length)
+        )
+        this.turn++
+        this.gameOver = this.simulation && this.turn >= this.playerCommands.length
+      } catch (error) {
+        this.emit(error.message)
+      }
     }
+  }
 
-    reset() {
-        this.board.initialize()
-    }
+  notifyTurnStart() {
+    this.emit(`TURN ${this.turn + 1}    -    NUM CHARACTERS: ${this.board.rovers.length + 1}`)
+  }
 
-    update(playerCommand = undefined) {
-        let command = commandsLUT[playerCommand]
-        if (command) {
-            try {
-                this.notifyTurnStart()
-                this.board.tick(this.simulation && this.playerCommands[this.turn] || command, this._generateRandomCommandList(this.board.rovers.length))
-                this.turn++;
-                this.gameOver = (this.simulation && this.turn >= this.playerCommands.length)
-            } catch (error) {
-                this.emit(error.message)
-            }
-        }
-    }
+  notifyTurnEnd() {
+    this.emit(`${'-'.repeat(this.board.width * 6)}`)
+  }
 
-    notifyTurnStart() {
-        this.emit(`TURN ${this.turn + 1}    -    NUM CHARACTERS: ${this.board.rovers.length + 1}`)
-    }
+  onGameOver() {
+    this.writeLogFile()
+  }
 
-    notifyTurnEnd() {
-        this.emit(`${'-'.repeat(this.board.width * 6)}`)
-    }
+  addLogLine(line) {
+    this.messageHistory.push(line)
+  }
 
-    onGameOver() {
-        this.writeLogFile()
-    }
+  writeLogFile() {
+    var filePath = `roverLog_${getFileTimestamp()}.log`
 
-    addLogLine(line) {
-        this.messageHistory.push(line)
-    }
+    this.messageHistory.map((message) => {
+      if (!Array.isArray(message)) {
+        message = [message]
+      }
+    })
 
-    writeLogFile() {
-        var filePath = `roverLog_${getFileTimestamp()}.log`
+    this.emit(`Successfully wrote history to file: ${filePath}`)
+  }
 
-        this.messageHistory.map((message) => {
-            if (!Array.isArray(message)) {
-                message = [message]
-            }
-        })
+  initializeCommands(playerCommands) {
+    this.playerCommands = this._parseCommands(playerCommands)
+  }
 
-        this.emit(`Successfully wrote history to file: ${filePath}`);
-    }
+  _parseCommands(commands) {
+    return commands
+      .trim()
+      .split('')
+      .map((command) => commandsLUT[command])
+      .filter((element) => element !== undefined)
+  }
 
-    initializeCommands(playerCommands) {
-        this.playerCommands = this._parseCommands(playerCommands)
-    }
-
-    _parseCommands(commands) {
-        return commands.trim().split('').map((command) => commandsLUT[command]).filter(element => element !== undefined)
-    }
-
-    _generateRandomCommandList(length) {
-        return Array.from({ length: length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
-    }
+  _generateRandomCommandList(length) {
+    return Array.from({ length: length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
+  }
 }
 
 module.exports = {
-    GameController
+  GameController,
 }
