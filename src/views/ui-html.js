@@ -32,7 +32,7 @@ class HtmlUI extends UserInterface {
   }
 
   resourcesLoaded() {
-    this.loadedResources++
+    this.loadedResources += 1
     if (this.loadedResources === this.spriteSourcesNum) {
       this.images.map((imageData) => {
         const [spriteName, spriteData, image] = imageData
@@ -103,13 +103,13 @@ class HtmlUI extends UserInterface {
 
   drawGrid() {
     const { grid } = this.gameController.board
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid.length; j++) {
+    for (let i = 0; i < grid.length; i += 1) {
+      for (let j = 0; j < grid.length; j += 1) {
         const gridSpace = grid[j][i]
         const newPosition = [i * 32, j * 32]
         this.firstRun && this.sprites.sand.render(newPosition)
 
-        switch (gridSpace === undefined ? undefined : gridSpace.constructor.name) {
+        switch (gridSpace.constructor && gridSpace.constructor.name) {
           case 'Rover':
             let lastPosition = gridSpace.travel_log[gridSpace.travel_log.length - 2] || newPosition
             lastPosition = lastPosition.map((e) => e * 32).reverse()
@@ -137,11 +137,11 @@ class HtmlUI extends UserInterface {
 
   bindScreenKeys(ui) {
     document.addEventListener('keydown', (e) => {
-      if (e.key == ' ' || e.key == 'p') ui.pause()
-      if (e.key == 'w') this.gameController.update('f')
-      if (e.key == 'a') this.gameController.update('l')
-      if (e.key == 's') this.gameController.update('b')
-      if (e.key == 'd') this.gameController.update('r')
+      if (e.key === ' ' || e.key === 'p') ui.pause()
+      if (e.key === 'w') this.gameController.update('f')
+      if (e.key === 'a') this.gameController.update('l')
+      if (e.key === 's') this.gameController.update('b')
+      if (e.key === 'd') this.gameController.update('r')
     })
   }
 }
