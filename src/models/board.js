@@ -31,16 +31,16 @@ class Board extends Observable {
   generateTravelLogBoard() {
     const board = this.generateEmptyGrid()
     const rovers = this.rovers.concat([this.player])
-    rovers.map((rover) => {
+    rovers.map(rover => {
       rover.ascii_override = GRID_SPRITE_TEMPLATE.replace(SPRITE, rover.name[0])
-      rover.travel_log.map((position) => (board[position[0]][position[1]] = rover))
+      return rover.travel_log.map(position => (board[position[0]][position[1]] = rover))
     })
     return board
   }
 
   occupiedPositions() {
     return this.obstacles
-      .concat(this.rovers.map((rover) => rover.position))
+      .concat(this.rovers.map(rover => rover.position))
       .concat([this.player.position])
   }
 
@@ -60,8 +60,8 @@ class Board extends Observable {
       this._generateRandomValidSpawnPoint()
     )
 
-    this.obstacles.map((position) => this.updateGridPosition(position))
-    this.rovers.map((rover) => this.updateGridPosition(rover.position, rover))
+    this.obstacles.map(position => this.updateGridPosition(position))
+    this.rovers.map(rover => this.updateGridPosition(rover.position, rover))
   }
 
   tick(playerCommand, enemyRoverCommands) {
@@ -88,7 +88,7 @@ class Board extends Observable {
   }
 
   validMove(pos) {
-    pos.forEach((coordinate) => {
+    pos.forEach(coordinate => {
       if (this.width <= coordinate || coordinate < 0) {
         throw new Error('Out of bounds move.')
       }
@@ -107,7 +107,7 @@ class Board extends Observable {
       this.player.position[1]
     )
     const occupiedPositions = this.occupiedPositions()
-    while (occupiedPositions.some((occupied) => compareNDArrays(occupied, position))) {
+    while (occupiedPositions.some(occupied => compareNDArrays(occupied, position))) {
       return this._generateRandomValidSpawnPoint()
     }
     return position

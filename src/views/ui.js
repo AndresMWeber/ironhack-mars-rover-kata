@@ -54,11 +54,11 @@ class UserInterface {
     this.drawGrid()
   }
 
-  drawGrid(grid) {
+  drawGrid() {
     throw new Error('You have to implement the method drawGrid!')
   }
 
-  drawMessage(message) {
+  drawMessage() {
     throw new Error('You have to implement the method notify!')
   }
 

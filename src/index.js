@@ -1,3 +1,5 @@
+import './styles/style.scss'
+
 const { GameController } = require('./controllers/controller')
 const { runtimes } = require('./config')
 

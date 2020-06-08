@@ -10,13 +10,13 @@ class Observable {
 
   emit(message) {
     this.messageHistory.push(message)
-    this.observers.map((observer) => observer(message))
+    this.observers.map(observer => observer(message))
   }
 }
 
 function arraySum(array1, array2, array_size = 2) {
-  const array_result = Array()
-  for (i = 0; i < array_size; i++) {
+  const array_result = []
+  for (let i = 0; i < array_size; i += 1) {
     array_result.push(array1[i] + array2[i])
   }
   return array_result
@@ -34,7 +34,7 @@ function generateRandomInt(max) {
 }
 
 function removeFromString(line, deleteList) {
-  deleteList.map((deletion) => (line = line.split(deletion).join('')))
+  deleteList.map(deletion => (line = line.split(deletion).join('')))
   return line
 }
 
@@ -57,8 +57,8 @@ function generatePositionInGrid(grid_max, not_over, not_below) {
 function compareNDArrays(arr1, arr2) {
   let result
 
-  arr1.forEach((e1, _) =>
-    arr2.forEach((e2) => {
+  arr1.forEach(e1 =>
+    arr2.forEach(e2 => {
       if (e1 !== e2) {
         result = false
       } else {

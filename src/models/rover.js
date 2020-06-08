@@ -2,6 +2,16 @@ const { directionLUT, compass } = require('../config')
 const { playerSpriteRenderer, roverSpriteRenderer } = require('../ascii-config')
 const { arraySum } = require('../utilities')
 
+const remapDirectionLookup = directionIndex => {
+  let modifier = 0
+  if (directionIndex < 0) {
+    modifier = 4
+  } else if (directionIndex > 3) {
+    modifier = -4
+  }
+  return directionIndex + modifier
+}
+
 class Rover {
   constructor(name, start_pos, direction, board) {
     this.name = name
@@ -26,7 +36,7 @@ class Rover {
   }
 
   makeTurn(direction) {
-    this._direction = this._remapDirectionLookup(this._direction + direction)
+    this._direction = remapDirectionLookup(this._direction + direction)
     this.report(`Made a turn: new direction is ${this.direction} with position ${this.position}`)
   }
 
@@ -47,12 +57,12 @@ class Rover {
 
   moveBackward() {
     this.report('Moving backward!')
-    this.move(compass[this._remapDirectionLookup(this._direction + 2)])
+    this.move(compass[remapDirectionLookup(this._direction + 2)])
   }
 
   move(direction) {
     this.report(
-      `Moving in direction ${directionLUT[direction]} while facing ${this.direction} = require(${this.position}`
+      `Moving in direction ${directionLUT[direction]} while facing ${this.direction} = require(${this.position})`
     )
     try {
       const future_position = arraySum(this.position, directionLUT[direction])
@@ -63,16 +73,6 @@ class Rover {
       this.report(`Final position is ${this.position}`)
       this.travel_log.push(this.position)
     }
-  }
-
-  _remapDirectionLookup(directionIndex) {
-    let modifier = 0
-    if (directionIndex < 0) {
-      modifier = 4
-    } else if (directionIndex > 3) {
-      modifier = -4
-    }
-    return directionIndex + modifier
   }
 }
 

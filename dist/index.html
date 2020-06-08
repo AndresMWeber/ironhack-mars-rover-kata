@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ironhack Mars Rover</title>
+    <link rel="icon" type="image/png" href="../media/favicon.ico" />
+  <link href="./main.8ea8153beacb0cbaf74d.css" rel="stylesheet"></head>
+
+  <body>
+    <h1 class="centered">Ironhack Mars Rover</h1>
+    <div class="centered flex">
+      <div id="gameBoard">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="float-right flex" id="messageLog"></div>
+    </div>
+    <script>
+      const messageLog = document.getElementById('messageLog')
+      messageLog.addEventListener('DOMNodeInserted', () => {
+        console.log('scrolling', messageLog.scrollTop)
+        messageLog.scrollTop = messageLog.scrollHeight
+        console.log('scrolling End', messageLog.scrollTop)
+      })
+    </script>
+  <script type="text/javascript" src="./main.8ea8153beacb0cbaf74d.bundle.js"></script></body>
+</html>

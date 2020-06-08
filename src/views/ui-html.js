@@ -23,18 +23,18 @@ class HtmlUI extends UserInterface {
   }
 
   initializeImages() {
-    for (const [spriteName, spriteData] of Object.entries(sprites)) {
+    Object.entries(sprites).forEach(([spriteName, spriteData]) => {
       const image = new Image()
       image.src = spriteData.src
       image.onload = this.resourcesLoaded.bind(this)
       this.images.push([spriteName, spriteData, image])
-    }
+    })
   }
 
   resourcesLoaded() {
     this.loadedResources += 1
     if (this.loadedResources === this.spriteSourcesNum) {
-      this.images.map((imageData) => {
+      this.images.forEach(imageData => {
         const [spriteName, spriteData, image] = imageData
         this.sprites[spriteName] = sprite({
           context: this.context,
@@ -69,20 +69,19 @@ class HtmlUI extends UserInterface {
   }
 
   onGameOver() {
+    this.paused = true
     return null
   }
 
   render() {
     this.lastTurn !== this.gameController.turn && this.renderGrid(this.gameController.board.grid)
-    Object.keys(this.sprites).map((sprite) => {
-      this.sprites[sprite].update()
-    })
+    Object.keys(this.sprites).forEach(each => this.sprites[each].update())
   }
 
   renderGrid(grid) {
-    const renderedGrid = grid.map((row) => row.map((entry) => this.renderGridSpace(entry)))
+    const renderedGrid = grid.map(row => row.map(entry => this.renderGridSpace(entry)))
     this.gameController.addLogLine(
-      renderedGrid.map((row) =>
+      renderedGrid.map(row =>
         removeFromString(row.join(' '), ['{/}', '{#5f5f00-fg}', '{#98e85a-fg}'])
       )
     )
@@ -108,24 +107,28 @@ class HtmlUI extends UserInterface {
         const gridSpace = grid[j][i]
         const newPosition = [i * 32, j * 32]
         this.firstRun && this.sprites.sand.render(newPosition)
-
-        switch (gridSpace.constructor && gridSpace.constructor.name) {
-          case 'Rover':
-            let lastPosition = gridSpace.travel_log[gridSpace.travel_log.length - 2] || newPosition
-            lastPosition = lastPosition.map((e) => e * 32).reverse()
-            this.context.clearRect(lastPosition[0], lastPosition[1], 32, 32)
-            this.context.clearRect(newPosition[0], newPosition[1], 32, 32)
-            this.sprites.sand.render(lastPosition)
-            this.sprites.sand.render(newPosition)
-            this.sprites[
-              `rover-${gridSpace.name === 'Starlord' ? 'player-' : ''}${
-                directionLUT[gridSpace.direction]
-              }`
-            ].render(newPosition)
-            break
-          case 'String':
-            this.firstRun && this.sprites.obstacle.render(newPosition)
-            break
+        if (gridSpace) {
+          switch (gridSpace.constructor.name) {
+            case 'Rover':
+              let lastPosition =
+                gridSpace.travel_log[gridSpace.travel_log.length - 2] || newPosition
+              lastPosition = lastPosition.map(e => e * 32).reverse()
+              this.context.clearRect(lastPosition[0], lastPosition[1], 32, 32)
+              this.context.clearRect(newPosition[0], newPosition[1], 32, 32)
+              this.sprites.sand.render(lastPosition)
+              this.sprites.sand.render(newPosition)
+              this.sprites[
+                `rover-${gridSpace.name === 'Starlord' ? 'player-' : ''}${
+                  directionLUT[gridSpace.direction]
+                }`
+              ].render(newPosition)
+              break
+            case 'String':
+              this.firstRun && this.sprites.obstacle.render(newPosition)
+              break
+            default:
+              break
+          }
         }
       }
     }
@@ -136,7 +139,7 @@ class HtmlUI extends UserInterface {
   }
 
   bindScreenKeys(ui) {
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
       if (e.key === ' ' || e.key === 'p') ui.pause()
       if (e.key === 'w') this.gameController.update('f')
       if (e.key === 'a') this.gameController.update('l')

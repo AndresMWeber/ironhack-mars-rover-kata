@@ -3,6 +3,18 @@ const { HtmlUI } = require('../views/ui-html')
 const { runtimes, commandsLUT } = require('../config')
 const { getFileTimestamp, Observable, generateRandomInt } = require('../utilities')
 
+const parseCommands = commands => {
+  return commands
+    .trim()
+    .split('')
+    .map(command => commandsLUT[command])
+    .filter(element => element)
+}
+
+const generateRandomCommandList = length => {
+  return Array.from({ length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
+}
+
 class GameController extends Observable {
   constructor(boardSize, runtime) {
     super()
@@ -11,7 +23,7 @@ class GameController extends Observable {
     this.simulation = this.runtime === runtimes[0]
     this.gameOver = false
     this.turn = 0
-    this.playerCommands = undefined
+    this.playerCommands = {}
     this.roverCommands = []
     this.board = new Board(boardSize)
     this.board.addObserver(this.emit.bind(this))
@@ -22,7 +34,7 @@ class GameController extends Observable {
     if (this.simulation) {
       this.initializeCommands(playerCommands)
       this.emit('Player Commands list:')
-      this.playerCommands.map((command) => this.emit(`    ${command}`))
+      this.playerCommands.map(command => this.emit(`    ${command}`))
     }
   }
 
@@ -30,16 +42,16 @@ class GameController extends Observable {
     this.board.initialize()
   }
 
-  update(playerCommand = undefined) {
+  update(playerCommand) {
     const command = commandsLUT[playerCommand]
     if (command) {
       try {
         this.notifyTurnStart()
         this.board.tick(
           (this.simulation && this.playerCommands[this.turn]) || command,
-          this._generateRandomCommandList(this.board.rovers.length)
+          generateRandomCommandList(this.board.rovers.length)
         )
-        this.turn++
+        this.turn += 1
         this.gameOver = this.simulation && this.turn >= this.playerCommands.length
       } catch (error) {
         this.emit(error.message)
@@ -65,30 +77,12 @@ class GameController extends Observable {
 
   writeLogFile() {
     const filePath = `roverLog_${getFileTimestamp()}.log`
-
-    this.messageHistory.map((message) => {
-      if (!Array.isArray(message)) {
-        message = [message]
-      }
-    })
-
+    this.messageHistory.map(message => (!Array.isArray(message) ? [message] : message))
     this.emit(`Successfully wrote history to file: ${filePath}`)
   }
 
   initializeCommands(playerCommands) {
-    this.playerCommands = this._parseCommands(playerCommands)
-  }
-
-  _parseCommands(commands) {
-    return commands
-      .trim()
-      .split('')
-      .map((command) => commandsLUT[command])
-      .filter((element) => element !== undefined)
-  }
-
-  _generateRandomCommandList(length) {
-    return Array.from({ length }, () => Object.values(commandsLUT)[generateRandomInt(3)])
+    this.playerCommands = parseCommands(playerCommands)
   }
 }
 

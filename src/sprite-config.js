@@ -10,19 +10,19 @@ function sprite(options) {
   that.height = options.height
   that.image = options.image
 
-  that.update = function () {
-    tickCount++
+  that.update = () => {
+    tickCount += 1
     if (tickCount > ticksPerFrame) {
       tickCount = 0
       if (frameIndex < numberOfFrames - 1) {
-        frameIndex++
+        frameIndex += 1
       } else {
         frameIndex = 0
       }
     }
   }
 
-  that.render = function (position = [0, 0]) {
+  that.render = (position = [0, 0]) => {
     const [x, y] = position
     that.context.beginPath()
     that.context.drawImage(

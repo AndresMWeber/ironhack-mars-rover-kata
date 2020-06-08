@@ -22,12 +22,13 @@ rules:
   no-eval: error
   no-implied-eval: error
   no-invalid-this: error
+  no-underscore-dangle: 0
   no-shadow: error
-  no-undefined: error
-  no-warning-comments:
-    - warn
-    - location: anywhere
-      terms:
-        - todo
-        - fixme
+  no-undefined: 0
+  no-unused-expressions: 0
+  class-methods-use-this: 0
+  no-case-declarations: 0
   prefer-promise-reject-errors: error
+  camelcase: 0
+  no-param-reassign: 0
+  no-return-assign: 0

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="./style/style.scss" />
     <title>Ironhack Mars Rover</title>
-    <link rel="icon" type="image/png" href="./media/favicon.ico" />
+    <link rel="icon" type="image/png" href="../media/favicon.ico" />
   </head>
 
   <body>
@@ -14,6 +13,11 @@
       </div>
       <div class="float-right flex" id="messageLog"></div>
     </div>
-    <script type="module" src="dist/index.js"></script>
+    <script>
+      const messageLog = document.getElementById('messageLog')
+      messageLog.addEventListener('DOMNodeInserted', () => {
+        messageLog.scrollTop = messageLog.scrollHeight
+      })
+    </script>
   </body>
 </html>
