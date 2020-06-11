@@ -1,0 +1,11 @@
+{
+  "typeAcquisition": {
+    "include": ["node"]
+  },
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}
