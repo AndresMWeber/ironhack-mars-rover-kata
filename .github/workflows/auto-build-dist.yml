@@ -22,7 +22,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add --f dist/*
+        git add --f docs/*
         git diff-index --quiet HEAD || git commit -m "Auto build of dist folder" -a
         git subtree push --prefix dist origin gh-pages
     - name: Push changes
