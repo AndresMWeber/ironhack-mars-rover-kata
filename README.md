@@ -3,6 +3,7 @@
 # Ironhack Mars Rover Kata [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) ![Auto-build dist](https://github.com/AndresMWeber/ironhack-mars-rover-kata/workflows/Auto-build%20dist/badge.svg)
 
 A JS canvas-based Mars Rover Simulator written in JavaScript (Node.js).
+# [Play Live on GHPages] (https://andresmweber.github.io/ironhack-mars-rover-kata/)
 
 ![demo.gif](media/demo_v3.gif)
 
