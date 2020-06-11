@@ -7,10 +7,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const PATHS = {
   src: path.join(__dirname, '../', 'src'),
-  images: path.join(__dirname, '../', 'media/images'),
+  images: path.join(__dirname, '../', 'src/images'),
   styles: path.join(__dirname, '../', 'src/styles'),
   build: path.join(__dirname, '../', 'build'),
-  dist: path.join(__dirname, '../', 'dist'),
+  dist: path.join(__dirname, '../', 'docs'),
   index: path.join(__dirname, '../', 'src/index.html'),
   entry: './index.js',
 }
@@ -71,12 +71,11 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: { limit: 8192 },
-          },
-        ],
+        loader: 'file-loader?hash=sha512&digest=hex',
+        options: {
+          outputPath: 'images',
+          name: '[name].[hash].[ext]',
+        },
       },
     ],
   },
