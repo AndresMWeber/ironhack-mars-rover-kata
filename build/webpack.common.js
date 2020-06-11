@@ -4,7 +4,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const nodeExternals = require('webpack-node-externals')
 
 const PATHS = {
   src: path.join(__dirname, '../', 'src'),
@@ -33,7 +32,7 @@ module.exports = {
     contentBase: '../dist',
   },
   resolve: {
-    extensions: ['*', '.js'],
+    extensions: ['*', '.js', '.png'],
   },
   plugins: [
     new UglifyJsPlugin(),
