@@ -54,3 +54,13 @@ Notice the travel map at the end which shows you the path they've taken.  Note t
   
 ## License
 This project is open source and available under the [MIT License](LICENSE).
+
+## History
+
+### v1
+The first version was a simple simulation where all rovers were automated on a preset grid.
+![demo1.gif](media/demo_v1.gif)
+
+### v2
+The second version was a simple simulation where the player rover movements were based on user input and all npc rovers were automated on a user input size grid.
+![demo2.gif](media/demo_v2.gif)
