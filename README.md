@@ -58,9 +58,13 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Version History
 
 ### 1.0.0
+
 The first version was a simple simulation where all rovers were automated on a preset grid.
+
 ![demo1.gif](media/demo_v1.gif)
 
 ### 2.0.0
+
 The second version was a simple simulation where the player rover movements were based on user input and all npc rovers were automated on a user input size grid.
+
 ![demo2.gif](media/demo_v2.gif)
